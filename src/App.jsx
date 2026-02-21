@@ -1,9 +1,8 @@
-import React from "react";
 import HomePage from "./pages/Home";
 import { Route, Routes } from "react-router-dom";
 import MovieDetail from "./pages/MovieDetail";
 import Layout from "./layouts/Layout";
-import Auth from "./pages/Auth";
+import Account from "./pages/Accuont";
 
 const App = () => {
   return (
@@ -27,7 +26,7 @@ const App = () => {
           }
         />
 
-        <Route path="/auth" element={<Auth />} />
+        <Route path="/account" element={<Account />} />
       </Routes>
     </div>
   );

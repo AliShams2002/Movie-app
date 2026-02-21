@@ -1,8 +1,16 @@
+import { useEffect } from "react";
 import { BiMovie, BiPlayCircle } from "react-icons/bi";
 import { BsPlayCircleFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { axiosInstance } from "../services/Config";
 
 export default function HomePage() {
+
+
+  useEffect(() => {
+    axiosInstance.get('movie/popular?').then(res => console.log(res)).catch(err => console.log(err))
+  }, []);
+
   return (
     <div>
       <div className="relative w-full h-screen bg-black overflow-hidden text-white">
@@ -24,11 +32,11 @@ export default function HomePage() {
               <span>2024</span>
               <span>148 دقیقه</span>
             </div>
-            <h1 className="text-5xl font-extrabold mb-4 leading-tight">
+            <h1 className="text-5xl font-iranSans-bold mb-4 leading-tight">
               نبرد آسمان‌ها
             </h1>
 
-            <p className="text-gray-300 mb-6">
+            <p className="text-gray-300 mb-6 font-iranSans-edit">
               داستانی حماسی از یک خلبان جنگنده که برای نجات کشورش با دشمنان
               مبارزه می‌کند.
             </p>
@@ -44,7 +52,10 @@ export default function HomePage() {
                   ▶ تماشای فیلم
                 </button>
               </Link>
-              <button className="bg-white/10 hover:bg-white/20 transition px-6 py-3 rounded-lg">
+              <button
+                className="bg-white/10 hover:bg-white/20 transition px-6 py-3 rounded-lg"
+                onClick={() => console.log(isOpen)}
+              >
                 اطلاعات بیشتر
               </button>
             </div>

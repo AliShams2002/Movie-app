@@ -5,7 +5,12 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily:{
+        'iranSans-bold': ['IRAnSansBold-Edit', 'sans-serif'],
+        'iranSans-edit': ['IRAnSans-Edit', 'sans-serif']
+      }
+    },
   },
   plugins: [],
 }
