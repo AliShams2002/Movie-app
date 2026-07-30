@@ -1,10 +1,13 @@
 import { create } from "zustand";
 
 const useModuleStore = create((set) => ({
-  isOpen: false,
+  serchModuleIsOpen: false,
+  menuModuleIsOpen: false,
 
-  open: () => set(() => ({ isOpen: true })),
-  close: () => set(() => ({ isOpen: false })),
+  serchModuleOpen: () => set(() => ({ serchModuleIsOpen: true })),
+  serchModuClose: () => set(() => ({ serchModuleIsOpen: false })),
+  menuModuleOpen: () => set(() => ({ menuModuleIsOpen: true })),
+  menuModuleClose: () => set(() => ({ menuModuleIsOpen: false })),
 }));
 
 export default useModuleStore;

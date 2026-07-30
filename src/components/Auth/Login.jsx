@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { loginSchema } from "../../utils/authValidation";
-import SpinnerLoading from "../SpinnerLoading";
+import SpinnerLoading from "../common/SpinnerLoading";
 import { loginUser } from "../../services/authService";
 
 const Login = ({ login }) => {

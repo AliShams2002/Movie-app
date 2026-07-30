@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
-import Login from "../components/Auth/Login";
-import useUserStore from "../store/authStore";
+import React, { useState } from "react";
+import Login from "../components/auth/Login";
 import { BsGithub, BsGoogle } from "react-icons/bs";
-import Register from "../components/Auth/Register";
-import { loginWithGithubProvider, loginWithGoogleProvider } from "../services/authService";
+import Register from "../components/auth/Register";
+import {
+  loginWithGithubProvider,
+  loginWithGoogleProvider,
+} from "../services/authService";
 
 const AuthLayout = () => {
   const [mode, setMode] = useState("login");

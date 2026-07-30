@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { registerSchema } from "../../utils/authValidation";
-import SpinnerLoading from "../SpinnerLoading";
+import SpinnerLoading from "../common/SpinnerLoading";
 import { registerUser } from "../../services/authService";
 
 const Register = ({ register }) => {
