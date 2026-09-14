@@ -1,19 +1,33 @@
 import { axiosInstance } from "./Config";
 
-export const getNowPlayingMovies = async () => {
-  const res = await axiosInstance.get("movie/now_playing");
+export const getNowPlayingMovies = async ({ signal }) => {
+  const res = await axiosInstance.get("movie/now_playing", { signal });
   const data = res.data.results;
   return data;
 };
 
-export const getAnimations = async () => {
-  const res = await axiosInstance.get("/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=16");
+export const getDiscoverMovies = async (params) => {
+  const res = await axiosInstance.get(
+    `/discover/movie?with_genres=${params.genre}&sort_by=${params.sortBy}&vote_average.gte=${params.rating}&primary_release_year=${+params.year}&page=${params.page}`,
+  );
   const data = res.data.results;
   return data;
 };
 
-export const getPopularMovies = async () => {
-  const res = await axiosInstance.get("movie/popular");
+export const getAnimations = async ({ signal }) => {
+  const res = await axiosInstance.get("/discover/movie", {
+    params: {
+      with_genres: 16,
+      sort_by: "popularity.desc",
+    },
+    signal,
+  });
+  const data = res.data.results;
+  return data;
+};
+
+export const getPopularMovies = async ({ signal }) => {
+  const res = await axiosInstance.get("movie/popular", { signal });
   const data = res.data.results;
   return data;
 };

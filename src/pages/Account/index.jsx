@@ -5,7 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase";
 import useAuthStore from "../../store/authStore";
 import { getUserProfile, logoutUser } from "../../services/authService";
-import SpinnerLoading from "../../components/common/SpinnerLoading";
+import Spinner from "../../components/common/Spinner";
 
 const Account = () => {
   const {
@@ -23,33 +23,34 @@ const Account = () => {
     await logoutUser();
   };
 
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
-      console.log(firebaseUser)
-      if (firebaseUser) {
-        setUser(firebaseUser);
+  // useEffect(() => {
+  //   console.log('firebaseUser')
+  //   const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
+  //     console.log(firebaseUser)
+  //     if (firebaseUser) {
+  //       setUser(firebaseUser);
         
-        const profile = await getUserProfile(firebaseUser.uid);
-        console.log(profile)
-        setProfile(profile);
-      }
-      setLoading(false);
-    });
-    return () => unsub();
-  }, []);
+  //       const profile = await getUserProfile(firebaseUser.uid);
+  //       console.log(profile)
+  //       setProfile(profile);
+  //     }
+  //     setLoading(false);
+  //   });
+  //   return () => unsub();
+  // }, []);
 
   if (loading)
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#0f0f1a] to-[#151522] flex items-center justify-center px-4">
         <h2 className="text-gray-200">
-          <SpinnerLoading width={12} height={12} />
+          <Spinner width={12} height={12} />
         </h2>
       </div>
     );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f0f1a] to-[#151522] flex items-center justify-center px-4">
-      {profile ? (
+      {/* {profile ? (
         <Profile
           profile={profile}
           user={user}
@@ -58,7 +59,7 @@ const Account = () => {
         />
       ) : (
         <AuthLayout />
-      )}
+      )} */}
     </div>
   );
 };

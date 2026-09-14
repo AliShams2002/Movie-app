@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/common/Header";
-import Footer from "../components/common/Footer";
+import Navbar from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
 import useModuleStore from "../store/moduleStore";
 import SearchModule from "../components/common/SearchModule";
 import useAuthStore from "../store/authStore";
@@ -51,16 +51,16 @@ const Layout = ({ children }) => {
       className="min-h-screen bg-[#0a0a0a] text-white font-sans relative overflow-x-hidden"
       dir="rtl"
     >
-      {pathname !== "/" && (
-        <Navbar
-          profile={profile}
-          menuModuleOpen={menuModuleOpen}
-          isScrolled={isScrolled}
-          headerBtnValue={headerBtnValue}
-          setActiveHeaderBtn={setActiveHeaderBtn}
-          activeHeaderBtn={activeHeaderBtn}
-        />
-      )}
+      {/* {pathname !== "/" && (
+      )} */}
+      <Navbar
+        profile={profile}
+        menuModuleOpen={menuModuleOpen}
+        isScrolled={isScrolled}
+        headerBtnValue={headerBtnValue}
+        setActiveHeaderBtn={setActiveHeaderBtn}
+        activeHeaderBtn={activeHeaderBtn}
+      />
       {serchModuleIsOpen && <SearchModule serchModuClose={serchModuClose} />}
       <MobileMenu
         menuModuleIsOpen={menuModuleIsOpen}

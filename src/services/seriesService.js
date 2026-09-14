@@ -1,7 +1,7 @@
 import { axiosInstance } from "./Config";
 
-export const getSeries = async () => {
-  const res = await axiosInstance.get("trending/tv/day");
+export const getSeries = async ({ signal }) => {
+  const res = await axiosInstance.get("trending/tv/day", { signal });
   const data = res.data.results;
   return data;
 };

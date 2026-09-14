@@ -1,0 +1,9 @@
+{
+    "window.commandCenter": true,
+    "window.density.editorTabHeight": "default",
+    "window.zoomPerWindow": true,
+    "editor.accessibilityPageSize": 500,
+    "editor.allowVariableFonts": true,
+    "editor.allowVariableLineHeights": true,
+    "editor.autoClosingBrackets": "languageDefined"
+}
