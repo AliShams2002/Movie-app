@@ -19,7 +19,7 @@ import {
   Zap,
 } from "lucide-react";
 
-export const movieGenre = [
+export const MOVIEGENRE = [
   {
     value: "",
     label: "All",
@@ -162,7 +162,7 @@ export const movieGenre = [
   },
 ];
 
-export const seriesGenres = [
+export const TVGENRE = [
   {
     id: 10759,
     name: "اکشن-ماجراجویی",
@@ -264,23 +264,3 @@ export const seriesGenres = [
     color: "from-amber-800 to-yellow-800",
   },
 ];
-
-export const movieFormatGenres = (genres) => {
-  let genresName = [];
-  for (const genre of genres) {
-    const getGenreData = movieGenre.find((i) => i.value == genre);
-    genresName.push(getGenreData?.label);
-  }
-  const compositionGenres = genresName.join("، ");
-  return compositionGenres;
-};
-
-export const seriesFormatGenres = (genres) => {
-  let genresName = [];
-  for (const genre of genres) {
-    const getGenreData = seriesGenres.find((i) => i.id == genre);
-    genresName.push(getGenreData?.name);
-  }
-  const compositionGenres = genresName.join("، ");
-  return compositionGenres;
-};

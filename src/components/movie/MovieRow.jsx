@@ -1,14 +1,13 @@
-import MovieCard from "../common/MovieCard";
 import SectionHeader from "../ui/SectionHeader";
-import { motion } from "framer-motion";
+import SectionMovie from "../ui/SectionMovie";
 
 const MovieRow = ({
   title,
-  subtitle,
-  icon,
+  subtitle = null,
+  icon = null,
   data,
   type,
-  linkTo,
+  linkTo = null,
   containerVariants,
   itemVariants,
 }) => {
@@ -20,40 +19,12 @@ const MovieRow = ({
         icon={icon}
         linkTo={linkTo}
       />
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6"
-      >
-        {data.status == "error" && (
-          <div className="col-span-6 text-center text-red-500">
-            <p className="text-lg font-semibold">{`Error: ${data.message}`}</p>
-            <button
-              className="bg-red-600 text-gray-100 px-2 py-1 rounded-md cursor-pointer"
-              onClick={data.refetch}
-            >
-              Refetch
-            </button>
-          </div>
-        )}
-
-        {data.data.length ? (
-          data.data.slice(0, 6).map((item) => (
-            <MovieCard
-              key={item.id}
-              item={item}
-              type={type}
-              itemVariants={itemVariants} // *** کلید اصلی حل مشکل: پاس دادن واریانت به کارت ***
-            />
-          ))
-        ) : (
-          <div className="col-span-6 text-center text-gray-500">
-            <p className="text-lg font-semibold">No data available</p>
-          </div>
-        )}
-      </motion.div>
+      <SectionMovie
+        initialData={data}
+        type={type}
+        itemVariants={itemVariants}
+        containerVariants={containerVariants}
+      />
     </section>
   );
 };

@@ -1,18 +1,16 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { Search, Tv, ChevronRight, Sparkles, Clapperboard } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Tv, Sparkles, Clapperboard } from "lucide-react";
 import {
   getNowPlayingMovies,
   getPopularMovies,
   getAnimations,
 } from "../../services/movieService";
-import { getSeries } from "../../services/seriesService";
-import { movieGenre } from "../../utils/genresUtils";
+import { getSeries } from "../../services/tv";
 import { useMovieList } from "../../hooks/data/useMovieList";
 import MovieRow from "../../components/movie/MovieRow";
 import GenreList from "../../components/ui/GenreList";
 import HeroSection from "../../components/ui/HeroSection";
 import SearchBanner from "../../components/ui/SearchBanner";
+import { MOVIEGENRE } from "../../utils/constants";
 
 // --- ۱. انیمیشن‌های مشترک Framer Motion ---
 const containerVariants = {
@@ -56,7 +54,7 @@ const Home = () => {
 
       {/* --- 3. Genres Section --- */}
       <GenreList
-        genres={movieGenre}
+        genres={MOVIEGENRE}
         containerVariants={containerVariants}
         itemVariants={itemVariants}
       />
@@ -79,7 +77,7 @@ const Home = () => {
         subtitle="The latest episodes of the week"
         icon={<Tv className="w-6 h-6" />}
         data={topSeries}
-        type="series"
+        type="tv"
         linkTo="/search"
         containerVariants={containerVariants}
         itemVariants={itemVariants}

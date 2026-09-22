@@ -31,3 +31,33 @@ export const getPopularMovies = async ({ signal }) => {
   const data = res.data.results;
   return data;
 };
+
+export const getMovieDetail = async ({ type, id, signal }) => {
+  const res = await axiosInstance.get(`${type}/${id}`, { signal });
+  const { data } = res;
+  return data;
+};
+
+export const getMovieCredits = async ({ type, id, signal }) => {
+  const res = await axiosInstance.get(`${type}/${id}/credits`, { signal });
+  const { data } = res;
+  return data;
+};
+
+export const getMovieVideos = async ({ type, id, signal }) => {
+  const res = await axiosInstance.get(`${type}/${id}/videos`, { signal });
+  const { data } = res;
+  return data;
+};
+
+export const getMovieSimilar = async ({ type, id, signal }) => {
+  const res = await axiosInstance.get(`${type}/${id}/similar`, { signal });
+  const { data } = res;
+  return data;
+};
+
+export const getMovieReviews = async ({ type, id, signal }) => {
+  const res = await axiosInstance.get(`${type}/${id}/reviews`, { signal });
+  const { data } = res;
+  return data;
+};

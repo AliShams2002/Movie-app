@@ -1,6 +1,6 @@
 import { Calendar, Play, Star } from "lucide-react";
 import React from "react";
-import { movieFormatGenres } from "../../utils/genresUtils";
+import { handelMovieGenre } from "../../utils/genreHelper";
 
 const MovieCard = ({ key, movie, lastItemRef, displayedMovies, index }) => {
   if (index === displayedMovies.length - 1) {
@@ -36,7 +36,7 @@ const MovieCard = ({ key, movie, lastItemRef, displayedMovies, index }) => {
               </span>
               <span className="text-gray-600">|</span>
               <span className="line-clamp-1">
-                {movieFormatGenres(movie.genre_ids)}
+                {handelMovieGenre(movie.genre_ids)}
               </span>
             </div>
           </div>
@@ -86,7 +86,7 @@ const MovieCard = ({ key, movie, lastItemRef, displayedMovies, index }) => {
               </span>
               <span className="text-gray-600">|</span>
               <span className="line-clamp-1">
-                {movieFormatGenres(movie.genre_ids)}
+                {handelMovieGenre(movie.genre_ids)}
               </span>
             </div>
           </div>

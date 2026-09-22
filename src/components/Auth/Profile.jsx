@@ -3,7 +3,7 @@ import { updateAvatar } from "../../services/userService";
 import { Link } from "react-router-dom";
 import { MovieSilder, MovieSlider2 } from "../common/Swiper";
 import { SwiperSlide } from "swiper/react";
-import MovieCard from "../common/MovieCard";
+import MovieCard from "../movie/MovieCard";
 import { getPopularMovies } from "../../services/movieService";
 import { useEffect, useState } from "react";
 

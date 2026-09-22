@@ -20,12 +20,12 @@ import {
   Loader2,
 } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
-import { movieFormatGenres, movieGenre } from "../../utils/genresUtils";
 import { FILTERS } from "../../constants/filters";
 import { updateSearchParams } from "../../utils/updateSearchParams";
 import { getDiscoverMovies } from "../../services/movieService";
 import { FilterSection } from "../../components/search/FilterSection";
 import MovieCard from "../../components/search/MovieCard";
+import { MOVIEGENRE } from "../../utils/constants";
 
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -204,7 +204,7 @@ const Search = () => {
               <FilterSection
                 icon={<Film className="w-4 h-4 text-blue-400" />}
                 label="ژانر"
-                options={movieGenre}
+                options={MOVIEGENRE}
                 selectedValue={genre}
                 onChange={(val) =>
                   updateSearchParams(searchParams, setSearchParams, {

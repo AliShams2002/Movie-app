@@ -1,14 +1,15 @@
 import { motion } from "framer-motion";
 import { SwiperSlide } from "swiper/react";
-import { MovieSlider3 } from "../common/Swiper";
+import { HeroSlider } from "../common/Swiper";
 import { AnimatePresence } from "framer-motion";
 import { Clock, Film, Info, Play } from "lucide-react";
-import { movieFormatGenres } from "../../utils/genresUtils";
+import { handelMovieGenre } from "../../utils/genreHelper";
+import { Link } from "react-router-dom";
 
-const HeroSection = ({data}) => {
+const HeroSection = ({ data }) => {
   return (
     <div className="relative h-[85vh] md:h-[90vh] lg:h-screen w-full overflow-hidden">
-      <MovieSlider3>
+      <HeroSlider>
         {data.map((item, index) => (
           <SwiperSlide key={item.id || index}>
             {({ isActive }) => (
@@ -16,9 +17,13 @@ const HeroSection = ({data}) => {
                 {/* Background Image */}
                 <div className="absolute inset-0">
                   <img
-                    src={`https://image.tmdb.org/t/p/original/${item.backdrop_path}`}
+                    src={`${item.backdrop_path ? `https://image.tmdb.org/t/p/original/${item.backdrop_path}` : "/images/Auth_Wallpaper.jpg"} `}
                     alt={item.title}
                     className="absolute inset-0 w-full h-full object-cover"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.src = "/images/Auth_Wallpaper.jpg";
+                    }}
                   />
                   {/* گرادینت‌های تاریک */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/10 to-transparent"></div>
@@ -47,7 +52,7 @@ const HeroSection = ({data}) => {
                           </span>
                           <span className="flex items-center gap-1">
                             <Film className="w-4 h-4" />{" "}
-                            {movieFormatGenres(item.genre_ids)}
+                            {handelMovieGenre(item.genre_ids)}
                           </span>
                         </div>
 
@@ -62,9 +67,12 @@ const HeroSection = ({data}) => {
                           <button className="flex items-center gap-2 bg-red-600 hover:bg-red-700 transition-all px-8 py-3 rounded-full font-bold text-md shadow-lg shadow-red-600/30">
                             <Play className="w-4 h-4 fill-current" /> PLAY
                           </button>
-                          <button className="flex items-center gap-2 bg-gray-800/60 hover:bg-gray-700/80 backdrop-blur-md transition-all px-8 py-3 rounded-full font-bold text-md border border-white/10">
+                          <Link
+                            to={`/movie/${item.id}`}
+                            className="flex items-center gap-2 bg-gray-800/60 hover:bg-gray-700/80 backdrop-blur-md transition-all px-8 py-3 rounded-full font-bold text-md border border-white/10"
+                          >
                             <Info className="w-4 h-4" /> Info
-                          </button>
+                          </Link>
                         </div>
                       </motion.div>
                     )}
@@ -74,7 +82,7 @@ const HeroSection = ({data}) => {
             )}
           </SwiperSlide>
         ))}
-      </MovieSlider3>
+      </HeroSlider>
     </div>
   );
 };

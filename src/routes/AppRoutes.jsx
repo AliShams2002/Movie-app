@@ -17,8 +17,8 @@ const AppRoutes = () => {
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path={`/movie/:id`} element={<Detail />} />
-          <Route path={`/tv/:id`} element={<Detail />} />
+          <Route path={`/movie/:id`} element={<Detail type="movie" />} />
+          <Route path={`/tv/:id`} element={<Detail type="tv" />} />
           <Route path={`/search`} element={<Search />} />
         </Route>
 
