@@ -20,7 +20,10 @@ const GenreList = ({ genres, containerVariants, itemVariants }) => {
         {genres.map(
           (genre) =>
             genre.isPapular && (
-              <Link to={`/search?genre=${genre.value}`} key={genre.value}>
+              <Link
+                to={`/search?genre=${genre.value}&type=movie`}
+                key={genre.value}
+              >
                 <motion.button
                   key={genre.id}
                   variants={itemVariants}

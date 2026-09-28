@@ -10,7 +10,7 @@ import MovieRow from "../../components/movie/MovieRow";
 import GenreList from "../../components/ui/GenreList";
 import HeroSection from "../../components/ui/HeroSection";
 import SearchBanner from "../../components/ui/SearchBanner";
-import { MOVIEGENRE } from "../../utils/constants";
+import { MOVIE_GENRES } from "../../utils/constants";
 
 // --- ۱. انیمیشن‌های مشترک Framer Motion ---
 const containerVariants = {
@@ -54,7 +54,7 @@ const Home = () => {
 
       {/* --- 3. Genres Section --- */}
       <GenreList
-        genres={MOVIEGENRE}
+        genres={MOVIE_GENRES}
         containerVariants={containerVariants}
         itemVariants={itemVariants}
       />
@@ -66,7 +66,7 @@ const Home = () => {
         icon={<Clapperboard className="w-6 h-6" />}
         data={popular}
         type="movie"
-        linkTo="/search"
+        linkTo="/search?list=popular&type=movie"
         containerVariants={containerVariants}
         itemVariants={itemVariants}
       />
@@ -78,7 +78,7 @@ const Home = () => {
         icon={<Tv className="w-6 h-6" />}
         data={topSeries}
         type="tv"
-        linkTo="/search"
+        linkTo="/search?list=top_rated&type=tv"
         containerVariants={containerVariants}
         itemVariants={itemVariants}
       />
@@ -93,7 +93,7 @@ const Home = () => {
         icon={<Sparkles className="w-6 h-6 text-cyan-400" />}
         data={animation}
         type="movie"
-        linkTo="/search"
+        linkTo="/search?genre=16&type=movie&sort=popularity.desc"
         containerVariants={containerVariants}
         itemVariants={itemVariants}
       />

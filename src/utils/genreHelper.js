@@ -1,21 +1,22 @@
-import { MOVIEGENRE, TVGENRE } from "./constants";
+import { MOVIE_GENRES, TV_GENRES } from "./constants";
 
-
+// Handel name`s of movie genre
 export const handelMovieGenre = (genres) => {
   let genresName = [];
   for (const genre of genres) {
-    const getGenreData = MOVIEGENRE.find((i) => i.value == genre);
+    const getGenreData = MOVIE_GENRES.find((i) => i.value == genre);
     genresName.push(getGenreData?.label);
   }
   const compositionGenres = genresName.join("، ");
   return compositionGenres;
 };
 
-export const seriesFormatGenres = (genres) => {
+// Handel name`s of tv genre
+export const handelTvGenre = (genres) => {
   let genresName = [];
   for (const genre of genres) {
-    const getGenreData = TVGENRE.find((i) => i.id == genre);
-    genresName.push(getGenreData?.name);
+    const getGenreData = TV_GENRES.find((i) => i.value == genre);
+    genresName.push(getGenreData?.label);
   }
   const compositionGenres = genresName.join("، ");
   return compositionGenres;

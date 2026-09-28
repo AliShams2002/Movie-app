@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import MovieListSkeleton from "../common/SceletonRow";
 import ErrorState from "../common/ErrorState";
 import EmptyState from "../common/EmptyState";
 import MovieCard from "../movie/MovieCard";
@@ -12,7 +11,7 @@ const SectionMovie = ({
 }) => {
   const { data, error, refetch, status } = initialData;
 
-  if (status === "loading") return <MovieListSkeleton />;
+  // if (status === "loading") return <MovieListSkeleton />;
   if (error) return <ErrorState errorMessage={error} refetch={refetch} />;
   if (!data.length) return <EmptyState />;
 
