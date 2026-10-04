@@ -3,7 +3,7 @@ import { BiMenu, BiSearch, BiUser } from "react-icons/bi";
 import { IoNotifications } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useScrollPosition } from "../../hooks/ui/useScrollPosition";
-import useAuthStore from "../../store/authStore";
+import useAuthStore from "../../store/useAuthStore";
 import NavItem from "../common/NavItem";
 
 const Navbar = () => {
@@ -45,10 +45,11 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           {user ? (
             <Link to="/account" className="cursor-pointer">
+              {/* {console.log(user)} */}
               <img
                 src={user.avatar}
                 alt={user.name}
-                className="w-full h-full object-cover rounded-full"
+                className="w-8 h-8 object-cover rounded-full"
               />
             </Link>
           ) : (

@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import useAuthStore from "../../store/authStore";
-import { addToFavorite, addToWatchList } from "../../services/userService";
+import useAuthStore from "../../store/useAuthStore";
 import DetailHero from "../../components/detail/DetailHero";
 import PanelInfo from "../../components/detail/PanelInfo";
 import DetailInfo from "../../components/detail/DetailInfo";
@@ -10,6 +9,8 @@ import SimilarRow from "../../components/detail/SimilarRow";
 import Modal from "../../components/common/Modal";
 import { useMovieDetail } from "../../hooks/data/useMovieDetail";
 import EpisodesSection from "../../components/detail/EpisodesSection";
+import toast from "react-hot-toast";
+import { useUserDataStore } from "../../store/useUserDataStore";
 
 const itemVariants = {
   hidden: { y: 20, opacity: 0 },
@@ -17,19 +18,22 @@ const itemVariants = {
 };
 
 const Detail = ({ type }) => {
-  const { user } = useAuthStore();
-  const params = useParams();
+  const { id } = useParams();
+  const { detail, credits, videos, similar, reviews, refetch, trailer } =
+    useMovieDetail({ type, id });
   const [isTrailerOpen, setisTrailerOpen] = useState(false);
 
-  const { detail, credits, videos, similar, reviews, refetch, trailer } =
-    useMovieDetail({ type, id: params.id });
-
-  const handelAddToFavorite = async (movieId) => {
-    if (user) await addToFavorite(user.uid, movieId);
-  };
-  const handelAddToWatchList = async (movieId) => {
-    if (user) await addToWatchList(user.uid, movieId);
-  };
+  const mediaObject = detail.data
+    ? {
+        id: detail.data.id,
+        mediaType: type, // 'movie' | 'tv'
+        title: detail.data.title || detail.data.name,
+        poster_path: detail.data.poster_path,
+        vote_average: detail.data.vote_average,
+        release_date: detail.data.release_date,
+        first_air_date: detail.data.first_air_date,
+      }
+    : null;
 
   const trailerKey = useMemo(() => {
     return (
@@ -56,6 +60,7 @@ const Detail = ({ type }) => {
             credits={credits}
             setisTrailerOpen={() => setisTrailerOpen(true)}
             trailerKey={trailerKey}
+            mediaObject={mediaObject}
           />
 
           {/* Episodes Section */}

@@ -1,55 +1,34 @@
-// validation/authValidation.js
 import * as yup from "yup";
 
-// اعتبارسنجی ایمیل
-export const emailValidation = yup
-  .string()
-  .required("ایمیل الزامی است")
-  .email("فرمت ایمیل صحیح نیست")
-  .matches(
-    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-    "ایمیل معتبر نیست",
-  );
+const messages = {
+  required: "This field is required.",
+  email: "Enter a valid email address.",
+  passwordMin: "The password must be at least 6 characters long.",
+  nameMin: "The name must be at least 3 characters long.",
+  nameMax: "The name cannot exceed 15 characters.",
+  passwordMatch: '"Passwords do not match"',
+};
 
-// اعتبارسنجی رمز عبور
-export const passwordValidation = yup
-  .string()
-  .required("رمز عبور الزامی است")
-  .min(8, "رمز عبور باید حداقل ۸ کاراکتر باشد")
-  .matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-    "رمز عبور باید شامل حروف بزرگ، کوچک، عدد و کاراکتر خاص باشد",
-  );
-
-// اعتبارسنجی تکرار رمز عبور
-export const confirmPasswordValidation = (passwordRef) =>
-  yup
+// Login schema
+export const loginSchema = yup.object({
+  email: yup.string().trim().required(messages.required).email(messages.email),
+  password: yup
     .string()
-    .required("تکرار رمز عبور الزامی است")
-    .oneOf([yup.ref(passwordRef)], "رمز عبور و تکرار آن مطابقت ندارند");
-
-// اعتبارسنجی نام کاربری
-export const usernameValidation = yup
-  .string()
-  .required("نام کاربری الزامی است")
-  .min(3, "نام کاربری باید حداقل ۳ کاراکتر باشد")
-  .max(30, "نام کاربری باید حداکثر ۳۰ کاراکتر باشد");
-
-// اسکیما لاگین
-export const loginSchema = yup.object().shape({
-  email: emailValidation,
-  password: yup.string().required("رمز عبور الزامی است"),
-  rememberMe: yup.boolean(),
+    .required(messages.required)
+    .min(6, messages.passwordMin),
 });
 
-// اسکیما ثبت‌نام
-export const registerSchema = yup.object().shape({
-  username: usernameValidation,
-  email: emailValidation,
-  password: passwordValidation,
-});
-
-// اسکیما فراموشی رمز عبور
-export const forgotPasswordSchema = yup.object().shape({
-  email: emailValidation,
+// Register schema
+export const registerSchema = yup.object({
+  name: yup
+    .string()
+    .trim()
+    .required(messages.required)
+    .min(3, messages.nameMin)
+    .max(15, messages.nameMax),
+  email: yup.string().trim().required(messages.required).email(messages.email),
+  password: yup
+    .string()
+    .required(messages.required)
+    .min(6, messages.passwordMin),
 });

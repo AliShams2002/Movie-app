@@ -1,5 +1,5 @@
 import { FaStar } from "react-icons/fa";
-import { handelLocalDate } from "../../utils/dateHelpers";
+import { formatDateHelper } from "../../utils/dateHelpers";
 
 const ReviewCard = ({ reviews }) => {
   return (
@@ -26,7 +26,7 @@ const ReviewCard = ({ reviews }) => {
                   {review.author_details.username}
                 </span>
                 <span className="text-gray-500 text-[10px]">
-                  {handelLocalDate(review.created_at)}
+                  {formatDateHelper(review.created_at)}
                 </span>
               </div>
             </div>

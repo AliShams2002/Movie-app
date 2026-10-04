@@ -28,7 +28,7 @@ const MovieCard = ({ movie, type = "movie", itemVariants }) => {
           <span className="bg-black/60 px-1.5 py-0.5 rounded text-[10px] text-white border border-yellow-500/20">
             {type === "movie" ? "Movie" : type === "series" ? "TV" : "Anim"}
           </span>
-          <span>⭐ {movie.vote_average.toFixed(1)}</span>
+          <span>⭐ {movie.vote_average?.toFixed(1) || movie.rating}</span>
         </div>
         <h3 className="font-bold text-sm truncate text-white">
           {type === "movie" ? movie.title : movie.name}

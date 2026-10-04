@@ -8,6 +8,10 @@ import CastCard from "./CastCard";
 import ErrorState from "../common/ErrorState";
 import EmptyState from "../common/EmptyState";
 import InfoSkeleton from "./skeleton/InfoSkeleton";
+import { Bookmark, BookmarkCheck } from "lucide-react";
+import { useWatchlist } from "../../hooks/user/useWatchlist";
+import useAuthStore from "../../store/useAuthStore";
+import { useFavorites } from "../../hooks/user/useFavorite";
 
 const DetailInfo = ({
   type,
@@ -15,6 +19,7 @@ const DetailInfo = ({
   credits,
   setisTrailerOpen,
   trailerKey,
+  mediaObject,
 }) => {
   const { data: movieDetail, status: movieStatus, error: movieError } = detail;
   const {
@@ -23,9 +28,37 @@ const DetailInfo = ({
     error: creditsError,
   } = credits;
 
+  const user = useAuthStore((s) => s.user);
+
+  const { isInWatchlist, toggle: toggleWatchlist } = useWatchlist(
+    mediaObject?.id,
+  );
+
+  const { isInFavorites, toggle: toggleFavorites } = useFavorites(
+    mediaObject?.id,
+  );
+
   const director = useMemo(() => findDirector(movieCredits?.crew), [credits]);
 
   const writers = useMemo(() => findWriters(movieCredits?.crew), [credits]);
+
+  const handleWatchlistClick = () => {
+    if (!user) {
+      // کاربر لاگین نیست → برو به Login و بعد برگرد
+      navigate("/login", { state: { from: location.pathname } });
+      return;
+    }
+    toggleWatchlist(mediaObject);
+  };
+
+  const handleFavoritesClick = () => {
+    if (!user) {
+      // کاربر لاگین نیست → برو به Login و بعد برگرد
+      navigate("/login", { state: { from: location.pathname } });
+      return;
+    }
+    toggleFavorites(mediaObject);
+  };
 
   if (movieStatus === "loading") return <InfoSkeleton />;
   if (movieError) return <ErrorState />;
@@ -80,15 +113,25 @@ const DetailInfo = ({
           />
           <Button
             className="bg-gray-800/50 hover:bg-gray-700/80 border border-white/10 px-6 py-3 rounded-full font-bold transition-all flex items-center gap-2"
-            icon={<FaPlus className="w-3 h-3" />}
-            title="Add to list"
-            action={() => handelAddToFavorite(movieDetail?.id)}
+            icon={
+              isInWatchlist ? (
+                <BookmarkCheck className="w-4 h-4" />
+              ) : (
+                <Bookmark className="w-4 h-4" />
+              )
+            }
+            title={isInWatchlist ? "In Watchlist" : "Add to watchlist"}
+            action={handleWatchlistClick}
           />
           <Button
             className="bg-gray-800/50 hover:bg-gray-700/80 border border-white/10 px-6 py-3 rounded-full font-bold transition-all flex items-center gap-2"
-            icon={<FiHeart className="w-4 h-4" />}
+            icon={
+              <FiHeart
+                className={`w-4 h-4 ${isInFavorites ? "fill-current" : ""}`}
+              />
+            }
             title="Add to favorites"
-            action={() => handelAddToWatchList(movieDetail?.id)}
+            action={handleFavoritesClick}
           />
         </div>
       </motion.div>
