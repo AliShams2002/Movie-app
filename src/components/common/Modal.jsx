@@ -3,20 +3,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Play } from "lucide-react";
 
 const Modal = ({ isOpen, onClose, videoKey, title }) => {
-  // --- ۱. قفل کردن اسکرول صفحه هنگام باز بودن مودال ---
+  // --- Lock page scrolling when the modal is open ---
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
-    // پاکسازی هنگام unmount
+    // Cleanup on unmount
     return () => {
       document.body.style.overflow = "unset";
     };
   }, [isOpen]);
 
-  // --- ۲. بستن با کلید Escape ---
+  // --- Closing with the Escape key ---
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") onClose();
@@ -25,7 +25,7 @@ const Modal = ({ isOpen, onClose, videoKey, title }) => {
     return () => window.removeEventListener("keydown", handleEsc);
   }, [onClose]);
 
-  // اگر videoKey وجود نداشت، چیزی رندر نکن
+  // If videoKey does not exist, do not render anything
   if (!videoKey) return null;
 
   return (
@@ -38,13 +38,13 @@ const Modal = ({ isOpen, onClose, videoKey, title }) => {
           transition={{ duration: 0.3 }}
           className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
         >
-          {/* --- پس‌زمینه تار (Backdrop) --- */}
+          {/* --- Blurred Backdrop --- */}
           <div
             className="absolute inset-0 bg-black/80 backdrop-blur-md"
-            onClick={onClose} // بستن با کلیک روی پس‌زمینه
+            onClick={onClose} // Close by clicking the background
           />
 
-          {/* --- کارت مودال (ویدیو) --- */}
+          {/* --- Modal Card (Video) --- */}
           <motion.div
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -52,7 +52,7 @@ const Modal = ({ isOpen, onClose, videoKey, title }) => {
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="relative w-full max-h-[600px] max-w-5xl bg-[#0f0f0f] rounded-3xl overflow-hidden shadow-2xl shadow-red-600/20 border border-white/10 z-10"
           >
-            {/* --- هدر مودال --- */}
+            {/* --- Modal Header --- */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-[#0a0a0a]/80 backdrop-blur-sm">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-red-600/10 rounded-xl border border-red-500/20">
@@ -66,6 +66,7 @@ const Modal = ({ isOpen, onClose, videoKey, title }) => {
                 </div>
               </div>
 
+              {/* Close modal btn */}
               <button
                 onClick={onClose}
                 className="p-2 rounded-full bg-white/5 hover:bg-red-600/20 border border-white/10 hover:border-red-500/30 text-gray-400 hover:text-red-400 transition-all duration-200"
@@ -75,7 +76,7 @@ const Modal = ({ isOpen, onClose, videoKey, title }) => {
               </button>
             </div>
 
-            {/* --- پخش‌کننده ویدیو (Embed YouTube) --- */}
+            {/* --- Video Player (YouTube Embed) --- */}
             <div className="relative w-full aspect-video bg-black">
               <iframe
                 src={`https://www.youtube.com/embed/${videoKey}?autoplay=1&rel=0&modestbranding=1&showinfo=0`}

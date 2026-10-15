@@ -21,7 +21,7 @@ const PanelInfo = ({ type, detail }) => {
         transition={{ duration: 0.6 }}
         className="sticky top-24 bg-[#141414]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-6 shadow-2xl"
       >
-        {/* پوستر فیلم */}
+        {/* Movie poster */}
         <div className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden shadow-lg mb-6 border border-white/10">
           <img
             src={
@@ -31,6 +31,9 @@ const PanelInfo = ({ type, detail }) => {
             }
             alt={data?.title}
             className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = "/images/placeholder.jpg";
+            }}
           />
           <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 text-xs font-bold text-yellow-400 border border-yellow-400/20">
             <FaStar /> {data?.vote_average.toFixed(1)}
@@ -78,7 +81,7 @@ const PanelInfo = ({ type, detail }) => {
           </li>
         </ul>
 
-        {/* کیفیت ها */}
+        {/* Qualities */}
         <div className="mt-6 pt-4 border-t border-white/5">
           <p className="text-xs text-gray-400 mb-3">Quality</p>
           <div className="flex flex-wrap gap-2">
@@ -93,7 +96,7 @@ const PanelInfo = ({ type, detail }) => {
           </div>
         </div>
 
-        {/* زیرنویس ها */}
+        {/* Subtitles */}
         <div className="mt-4 pt-4 border-t border-white/5">
           <p className="text-xs text-gray-400 mb-3">Subtitle</p>
           <div className="flex flex-wrap gap-2">

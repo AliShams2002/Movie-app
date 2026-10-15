@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FaPlay, FaPlus } from "react-icons/fa";
+import { FaPlay } from "react-icons/fa";
 import { FiHeart } from "react-icons/fi";
 import Button from "../common/Button";
 import { useMemo } from "react";
@@ -8,10 +8,11 @@ import CastCard from "./CastCard";
 import ErrorState from "../common/ErrorState";
 import EmptyState from "../common/EmptyState";
 import InfoSkeleton from "./skeleton/InfoSkeleton";
-import { Bookmark, BookmarkCheck } from "lucide-react";
+import { Bookmark } from "lucide-react";
 import { useWatchlist } from "../../hooks/user/useWatchlist";
 import useAuthStore from "../../store/useAuthStore";
 import { useFavorites } from "../../hooks/user/useFavorite";
+import toast from "react-hot-toast";
 
 const DetailInfo = ({
   type,
@@ -20,6 +21,7 @@ const DetailInfo = ({
   setisTrailerOpen,
   trailerKey,
   mediaObject,
+  refetch,
 }) => {
   const { data: movieDetail, status: movieStatus, error: movieError } = detail;
   const {
@@ -38,30 +40,25 @@ const DetailInfo = ({
     mediaObject?.id,
   );
 
+  // Get director
   const director = useMemo(() => findDirector(movieCredits?.crew), [credits]);
 
+  // Get writers
   const writers = useMemo(() => findWriters(movieCredits?.crew), [credits]);
 
-  const handleWatchlistClick = () => {
+  // Add to watchlist/favorites
+  const handleAddToStore = (storeName) => {
     if (!user) {
-      // کاربر لاگین نیست → برو به Login و بعد برگرد
-      navigate("/login", { state: { from: location.pathname } });
+      toast.error("First, login to your account");
       return;
     }
-    toggleWatchlist(mediaObject);
-  };
-
-  const handleFavoritesClick = () => {
-    if (!user) {
-      // کاربر لاگین نیست → برو به Login و بعد برگرد
-      navigate("/login", { state: { from: location.pathname } });
-      return;
-    }
-    toggleFavorites(mediaObject);
+    storeName === "watchlist"
+      ? toggleWatchlist(mediaObject)
+      : toggleFavorites(mediaObject);
   };
 
   if (movieStatus === "loading") return <InfoSkeleton />;
-  if (movieError) return <ErrorState />;
+  if (movieError) return <ErrorState refetch={refetch} />;
   if (!movieDetail) return <EmptyState />;
 
   return (
@@ -102,7 +99,7 @@ const DetailInfo = ({
           {movieDetail?.overview}
         </p>
 
-        {/* دکمه‌های اکشن */}
+        {/* Action buttons */}
         <div className="flex flex-wrap gap-3">
           <Button
             className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-full font-bold transition-all flex items-center gap-2 shadow-lg shadow-red-600/20 hover:shadow-red-600/40"
@@ -114,14 +111,12 @@ const DetailInfo = ({
           <Button
             className="bg-gray-800/50 hover:bg-gray-700/80 border border-white/10 px-6 py-3 rounded-full font-bold transition-all flex items-center gap-2"
             icon={
-              isInWatchlist ? (
-                <BookmarkCheck className="w-4 h-4" />
-              ) : (
-                <Bookmark className="w-4 h-4" />
-              )
+              <Bookmark
+                className={`w-4 h-4 ${isInWatchlist ? "fill-current" : ""}`}
+              />
             }
             title={isInWatchlist ? "In Watchlist" : "Add to watchlist"}
-            action={handleWatchlistClick}
+            action={() => handleAddToStore("watchlist")}
           />
           <Button
             className="bg-gray-800/50 hover:bg-gray-700/80 border border-white/10 px-6 py-3 rounded-full font-bold transition-all flex items-center gap-2"
@@ -131,12 +126,12 @@ const DetailInfo = ({
               />
             }
             title="Add to favorites"
-            action={handleFavoritesClick}
+            action={() => handleAddToStore("favorites")}
           />
         </div>
       </motion.div>
 
-      {/* --- درباره فیلم (دیتیل) --- */}
+      {/* --- About the Movie (Details) --- */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

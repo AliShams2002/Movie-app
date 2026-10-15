@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 import React from "react";
-import { Link } from "react-router-dom";
+import Button from "../common/Button";
 
 const MovieCard = ({ movie, type = "movie", itemVariants }) => {
   return (
@@ -12,17 +12,18 @@ const MovieCard = ({ movie, type = "movie", itemVariants }) => {
       transition={{ type: "spring", stiffness: 300 }}
       className="group relative cursor-pointer rounded-xl overflow-hidden aspect-[2/3] bg-gray-800 border border-gray-700/30 hover:border-red-500/50 transition-colors"
     >
+      {/* Img */}
       <img
-        src={`${movie.poster_path ? `https://image.tmdb.org/t/p/original/${movie.poster_path}` : "/images/Auth_Wallpaper.jpg"}`}
+        src={`${movie.poster_path ? `https://image.tmdb.org/t/p/original/${movie.poster_path}` : "/images/placeholder.jpg"}`}
         alt={movie.title}
         className="w-full h-full object-cover transition-transform duration-500 group group-hover:scale-110"
         loading="lazy"
         onError={(e) => {
-          e.currentTarget.src = "/images/Auth_Wallpaper.jpg";
+          e.currentTarget.src = "/images/placeholder.jpg";
         }}
       />
 
-      {/* Overlay برای نمایش در هاور */}
+      {/* Overlay to display on hover */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
         <div className="flex items-center gap-2 text-yellow-400 text-xs font-bold mb-1">
           <span className="bg-black/60 px-1.5 py-0.5 rounded text-[10px] text-white border border-yellow-500/20">
@@ -38,16 +39,17 @@ const MovieCard = ({ movie, type = "movie", itemVariants }) => {
             ? movie.release_date?.substring(0, 4)
             : movie.first_air_date?.substring(0, 4)}
         </p>
-        <Link
-          to={`/${type}/${movie.id}`}
+        <Button
+          type="link"
+          action={`/${type}/${movie.id}`}
           className="mt-3 w-full bg-red-600/90 hover:bg-red-600 py-2 rounded-lg text-[11px] font-bold transition-colors flex items-center justify-center gap-1"
         >
           <Play className="w-3 h-3 fill-current" />
           PLAY
-        </Link>
+        </Button>
       </div>
 
-      {/* اطلاعات دائمی (زمانی که هاور نیست) */}
+      {/* Static information (when not hovering) */}
       <div className="absolute bottom-3 left-3 right-3 z-10 flex justify-between items-end group-hover:opacity-0 transition-opacity duration-300">
         <h3 className="font-bold text-xs truncate max-w-[70%] drop-shadow-md text-white">
           {type === "movie" ? movie.title : movie.name}

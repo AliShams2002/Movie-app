@@ -2,13 +2,13 @@ import MovieCard from "../movie/MovieCard";
 import EmptyState from "../common/EmptyState";
 import { MovieSlider } from "../common/Swiper";
 import { SwiperSlide } from "swiper/react";
-import Spinner from "../common/Spinner";
 import ErrorState from "../common/ErrorState";
+import MovieListSkeleton from "../common/MovieListSkeleton";
 
 const SimilarRow = ({ type, detail, itemVariants }) => {
   const { data, status, error } = detail;
 
-  if (status === "loading") return <Spinner />;
+  if (status === "loading") return <MovieListSkeleton />;
   if (error) return <ErrorState />;
   if (!data) return <EmptyState />;
 
@@ -22,6 +22,7 @@ const SimilarRow = ({ type, detail, itemVariants }) => {
         </div>
 
         {data?.results ? (
+          // Media itme with slider
           <MovieSlider slidesPerViewPc={6}>
             {data.results.map((movie) => (
               <SwiperSlide key={movie.id}>
@@ -34,6 +35,7 @@ const SimilarRow = ({ type, detail, itemVariants }) => {
             ))}
           </MovieSlider>
         ) : (
+          // If empty data
           <EmptyState />
         )}
       </div>

@@ -13,7 +13,11 @@ const Login = () => {
 
   const from = location.state?.from || "/account";
 
-  useEffect(() => {}, [user, isLoading, navigate, from]);
+  useEffect(() => {
+    if (!isLoading && user) {
+      navigate(from, { replace: true });
+    }
+  }, [user, isLoading, navigate, from]);
 
   if (isLoading) return <Spinner />;
 

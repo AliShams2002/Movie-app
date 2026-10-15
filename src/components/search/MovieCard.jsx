@@ -1,6 +1,8 @@
 import { Calendar, Play, Star } from "lucide-react";
 import { handelMovieGenre, handelTvGenre } from "../../utils/genreHelper";
 import { Link } from "react-router-dom";
+import React from "react";
+import Button from "../common/Button";
 
 const MovieCard = ({ movie, type }) => {
   return (
@@ -13,9 +15,17 @@ const MovieCard = ({ movie, type }) => {
       <div className="relative w-full flex-1 aspect-[3/4] md:aspect-[3/4] rounded-xl overflow-hidden shrink-0">
         {/* image */}
         <img
-          src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+          src={
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+              : "/images/placeholder.jpg"
+          }
           alt={movie.title}
+          loading="lazy"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          onError={(e) => {
+            e.currentTarget.src = "/images/placeholder.jpg";
+          }}
         />
         {/* Rating */}
         <div className="absolute top-2 left-2 bg-black/80 backdrop-blur-md px-2 py-1 rounded-lg flex items-center gap-1 text-xs font-bold text-yellow-400">
@@ -53,16 +63,17 @@ const MovieCard = ({ movie, type }) => {
             </span>
           </div>
           {/* Play btn */}
-          <Link
-            to={`/${type}/${movie.id}`}
+          <Button
+            type="link"
+            action={`/${type}/${movie.id}`}
             className="bg-red-600/80 hover:bg-red-600 text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors flex items-center gap-1"
           >
             <Play className="w-3 h-3 fill-current" /> PLAY
-          </Link>
+          </Button>
         </div>
       </div>
     </div>
   );
 };
 
-export default MovieCard;
+export default React.memo(MovieCard);

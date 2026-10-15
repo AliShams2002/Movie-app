@@ -4,9 +4,27 @@ import { HeroSlider } from "../common/Swiper";
 import { AnimatePresence } from "framer-motion";
 import { Clock, Film, Info, Play } from "lucide-react";
 import { handelMovieGenre } from "../../utils/genreHelper";
-import { Link } from "react-router-dom";
+import Button from "../common/Button";
+import { useMovieVideos } from "../../hooks/data/useMovieVideos";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import Modal from "../common/Modal";
 
 const HeroSection = ({ data }) => {
+  const [trailerKey, setTrailerKey] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { fetchTrailer, isLoading } = useMovieVideos();
+
+  const handlePlayClick = async (id) => {
+    const key = await fetchTrailer(id, "movie");
+    if (key) {
+      setTrailerKey(key);
+      setIsModalOpen(true);
+    } else {
+      toast.error("No trailer available for this movie");
+    }
+  };
+
   return (
     <div className="relative h-[85vh] md:h-[90vh] lg:h-screen w-full overflow-hidden">
       <HeroSlider>
@@ -25,12 +43,12 @@ const HeroSection = ({ data }) => {
                       e.currentTarget.src = "/images/Auth_Wallpaper.jpg";
                     }}
                   />
-                  {/* گرادینت‌های تاریک */}
+                  {/* Dark gradients*/}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/10 to-transparent"></div>
                   <div className="absolute inset-0 bg-black/10"></div>
                 </div>
 
-                {/* محتوای متنی */}
+                {/* Textual content */}
                 <div className="relative container mx-auto px-6 h-full flex flex-col justify-end pb-20 md:pb-28">
                   <AnimatePresence mode="wait">
                     {isActive && (
@@ -55,24 +73,32 @@ const HeroSection = ({ data }) => {
                             {handelMovieGenre(item.genre_ids)}
                           </span>
                         </div>
-
+                        {/* Title */}
                         <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-tight drop-shadow-xl">
                           {item.title}
                         </h1>
+                        {/* Subtitle */}
                         <p className="text-md text-gray-300 mb-8 leading-relaxed line-clamp-3 max-w-xl drop-shadow-lg">
                           {item.overview}
                         </p>
 
                         <div className="flex flex-wrap gap-4">
-                          <button className="flex items-center gap-2 bg-red-600 hover:bg-red-700 transition-all px-8 py-3 rounded-full font-bold text-md shadow-lg shadow-red-600/30">
-                            <Play className="w-4 h-4 fill-current" /> PLAY
-                          </button>
-                          <Link
-                            to={`/movie/${item.id}`}
+                          {/* Play btn */}
+                          <Button
+                            type="button"
+                            action={() => handlePlayClick(item.id)}
+                            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 transition-all px-8 py-3 rounded-full font-bold text-md shadow-lg shadow-red-600/30"
+                            icon={<Play className="w-4 h-4" />}
+                            title="play"
+                          />
+                          {/* Info btn */}
+                          <Button
+                            type="link"
+                            action={`/movie/${item.id}`}
                             className="flex items-center gap-2 bg-gray-800/60 hover:bg-gray-700/80 backdrop-blur-md transition-all px-8 py-3 rounded-full font-bold text-md border border-white/10"
                           >
                             <Info className="w-4 h-4" /> Info
-                          </Link>
+                          </Button>
                         </div>
                       </motion.div>
                     )}
@@ -83,6 +109,12 @@ const HeroSection = ({ data }) => {
           </SwiperSlide>
         ))}
       </HeroSlider>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        videoKey={trailerKey}
+        title="Interstellar"
+      />
     </div>
   );
 };

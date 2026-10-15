@@ -17,7 +17,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (response) => {
     if (response.data && response.data.success === false) {
-      const error = new Error(response.data.message || "خطای سرور");
+      const error = new Error(response.data.message || "Server Error");
       error.response = response;
       return Promise.reject(error);
     }
@@ -27,11 +27,9 @@ axiosInstance.interceptors.response.use(
   (error) => {
     // مدیریت خطاهای شبکه یا سرور// مدیریت خطاهای مختلف
     if (!error.response) {
-      // خطای شبکه
-      // toast.error(
-      //   "خطا در ارتباط با سرور. لطفاً اتصال اینترنت خود را بررسی کنید.",
-      // );
-      return Promise.reject(new Error("اتصال به سرور برقرار نیست"));
+      return Promise.reject(
+        new Error("Connection to the server could not be established"),
+      );
     }
 
     const { status, data } = error.response;
@@ -42,21 +40,21 @@ axiosInstance.interceptors.response.use(
         localStorage.removeItem("token");
         window.location.href =
           "/login?redirect=" + encodeURIComponent(window.location.pathname);
-        toast.error("لطفاً مجدداً وارد شوید");
+        toast.error("Please log in again");
         break;
 
       case 404:
         // Not Found
-        toast.error("منبع مورد نظر یافت نشد");
+        toast.error("The requested resource was not found");
         break;
 
       case 500:
         // Server Error
-        toast.error("خطای داخلی سرور. لطفاً با پشتیبانی تماس بگیرید");
+        toast.error("Internal server error. Please contact support");
         break;
 
       default:
-        toast.error(data?.message || "خطای ناشناخته");
+        toast.error(data?.message || "Unknown error");
     }
 
     return Promise.reject(error);

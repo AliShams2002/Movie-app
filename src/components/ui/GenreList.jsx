@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const GenreList = ({ genres, containerVariants, itemVariants }) => {
   return (
     <div className="container mx-auto px-6 py-12">
+      {/* Title */}
       <div className="text-center mb-10">
         <h2 className="text-3xl font-bold mb-2">Popular Categories</h2>
         <p className="text-gray-400 text-sm">
@@ -11,6 +12,7 @@ const GenreList = ({ genres, containerVariants, itemVariants }) => {
         </p>
       </div>
 
+      {/* Items card */}
       <motion.div
         variants={containerVariants}
         initial="hidden"

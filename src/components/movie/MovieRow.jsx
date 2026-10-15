@@ -13,12 +13,14 @@ const MovieRow = ({
 }) => {
   return (
     <section className="container mx-auto px-6 py-12 border-t border-white/5">
+      {/* Header */}
       <SectionHeader
         title={title}
         subtitle={subtitle}
         icon={icon}
         linkTo={linkTo}
       />
+      {/* Items */}
       <SectionMovie
         initialData={data}
         type={type}

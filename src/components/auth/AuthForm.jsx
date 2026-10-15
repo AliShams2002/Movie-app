@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
 import {
   Mail,
   Lock,
@@ -15,11 +14,12 @@ import { FaGithub } from "react-icons/fa";
 import { useFormik } from "formik";
 import { loginSchema, registerSchema } from "../../schemas/authSchemas";
 import useAuthStore from "../../store/useAuthStore";
-// import { createUserDoc, loginUser } from "../../services/userService";
+import Spinner from "../common/Spinner";
+import Button from "../common/Button";
+import Input from "./Input";
 
 const AuthForm = ({ isLogin, onToggleMode }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -35,9 +35,8 @@ const AuthForm = ({ isLogin, onToggleMode }) => {
         } else {
           await useAuthStore
             .getState()
-            .register(values.username, values.email, values.password);
+            .register(values.name, values.email, values.password);
         }
-        navigate(form, { replace: true });
       } catch (error) {
         setFieldError("email", getFirebaseErrorMessage(error.code));
       } finally {
@@ -77,14 +76,15 @@ const AuthForm = ({ isLogin, onToggleMode }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/10 to-[#0a0a0a]/30"></div>
       </div>
 
-      {/* --- Return to Home button (top right) --- */}
-      <Link
-        to="/"
+      {/* --- Return to Home button --- */}
+      <Button
+        type="link"
+        action="/"
         className="absolute top-6 right-6 z-20 flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-full backdrop-blur-md border border-white/10"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to home
-      </Link>
+      </Button>
 
       {/* --- Main Login Card --- */}
       <motion.div
@@ -95,13 +95,14 @@ const AuthForm = ({ isLogin, onToggleMode }) => {
       >
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <Link
-            to="/"
+          <Button
+            type="link"
+            action="/"
             className="flex items-center gap-2 text-3xl font-bold text-red-500 tracking-wider"
           >
             <Clapperboard className="w-8 h-8" />
             CINEMA
-          </Link>
+          </Button>
         </div>
 
         {/* Subtitle */}
@@ -118,22 +119,20 @@ const AuthForm = ({ isLogin, onToggleMode }) => {
 
         {/* --- Social login buttons (Provider) --- */}
         <div className="grid grid-cols-2 gap-3 mb-6">
-          <button
+          <Button
             type="button"
-            onClick={() => useAuthStore.getState().loginWithGoogle()}
+            action={() => useAuthStore.getState().loginWithGoogle()}
             className="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl py-3 transition-colors duration-200 text-sm font-medium"
-          >
-            <FcGoogle className="w-5 h-5" />
-            <span>Google</span>
-          </button>
-          <button
+            icon={<FcGoogle className="w-5 h-5" />}
+            title="Google"
+          />
+          <Button
             type="button"
-            onClick={() => useAuthStore.getState().loginWithGithub()}
+            action={() => useAuthStore.getState().loginWithGithub()}
             className="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl py-3 transition-colors duration-200 text-sm font-medium"
-          >
-            <FaGithub className="w-5 h-5" />
-            <span>GitHub</span>
-          </button>
+            icon={<FaGithub className="w-5 h-5" />}
+            title="GitHub"
+          />
         </div>
 
         {/* Separator */}
@@ -147,150 +146,98 @@ const AuthForm = ({ isLogin, onToggleMode }) => {
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           {/* Name field (registration mode only)*/}
           {!isLogin && (
-            <motion.div variants={itemVariants} className="relative">
-              <label
-                id="name"
-                className="block text-xs text-gray-400 mb-1.5 mr-1"
-              >
-                UserName
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  placeholder="Example Michel..."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pr-10 pl-4 text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/50 transition-all placeholder:text-gray-600"
-                />
-                <UserRound className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" />
-              </div>
-
-              {/* Name error message */}
-              {formik.touched.name && formik.errors.name && (
-                <div className="error text-xs text-red-400">
-                  {formik.errors.name}
-                </div>
-              )}
-            </motion.div>
+            <Input
+              lable="UserName"
+              type="text"
+              id="name"
+              value={formik.values.name}
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pr-10 pl-4 text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/50 transition-all placeholder:text-gray-600"
+              placeholder="Example Michel..."
+              formik={formik}
+              itemVariants={itemVariants}
+              touched={formik.touched.name}
+              errors={formik.errors.name}
+            >
+              <UserRound className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" />
+            </Input>
           )}
 
           {/* Email field */}
-          <motion.div variants={itemVariants} className="relative">
-            <label
-              id="email"
-              className="block text-xs text-gray-400 mb-1.5 mr-1"
-            >
-              Email
-            </label>
-            <div className="relative">
-              <input
-                type="email"
-                name="email"
-                id="email"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                placeholder="example@email.com"
-                className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pr-10 pl-4 text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/50 transition-all text-left placeholder:text-gray-600 font-sans"
-              />
-              <Mail className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" />
-            </div>
-
-            {/* Email error message */}
-            {formik.touched.email && formik.errors.email && (
-              <div className="error text-xs text-red-400">
-                {formik.errors.email}
-              </div>
-            )}
-          </motion.div>
+          <Input
+            lable="Email"
+            type="email"
+            id="email"
+            value={formik.values.email}
+            className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pr-10 pl-4 text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/50 transition-all text-left placeholder:text-gray-600 font-sans"
+            placeholder="example@email.com"
+            formik={formik}
+            itemVariants={itemVariants}
+            touched={formik.touched.email}
+            errors={formik.errors.email}
+          >
+            <Mail className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" />
+          </Input>
 
           {/* Password field*/}
-          <motion.div variants={itemVariants} className="relative">
-            <label
-              id="password"
-              className="block text-xs text-gray-400 mb-1.5 mr-1"
-            >
-              Password
-            </label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                id="password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                placeholder="••••••••"
-                className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pr-10 pl-10 text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/50 transition-all text-left placeholder:text-gray-600 font-sans"
-              />
-              <Lock className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
-              >
-                {showPassword ? (
+
+          <Input
+            lable="Password"
+            type={showPassword ? "text" : "password"}
+            id="password"
+            value={formik.values.password}
+            className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pr-10 pl-10 text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500/50 transition-all text-left placeholder:text-gray-600 font-sans"
+            placeholder="••••••••"
+            formik={formik}
+            itemVariants={itemVariants}
+            touched={formik.touched.password}
+            errors={formik.errors.password}
+          >
+            <Lock className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" />
+            <Button
+              type="button"
+              action={() => setShowPassword(!showPassword)}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+              icon={
+                showPassword ? (
                   <EyeOff className="w-4 h-4" />
                 ) : (
                   <Eye className="w-4 h-4" />
-                )}
-              </button>
-            </div>
-            {/* Password error message */}
-            {formik.touched.password && formik.errors.password && (
-              <div className="error text-xs text-red-400">
-                {formik.errors.password}
-              </div>
-            )}
-          </motion.div>
+                )
+              }
+            />
+          </Input>
 
-          {/* Forget password */}
-          {/* {isLogin && (
-            <div className="flex justify-end">
-              <a
-                href="#"
-                className="text-xs text-red-400 hover:text-red-300 transition-colors"
-              >
-                رمز عبور خود را فراموش کرده‌اید؟
-              </a>
-            </div>
-          )} */}
-
-          {/* Submit btn */}
-          {/* <motion.button
-            variants={itemVariants}
-            whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.98 }}
+          <Button
             type="submit"
             disabled={formik.isSubmitting}
             className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-red-600/30 hover:shadow-red-600/50 mt-2"
-          >
-            {isLogin ? "Login" : "Register"}
-          </motion.button> */}
-          <button
-            type="submit"
-            disabled={formik.isSubmitting}
-            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-red-600/30 hover:shadow-red-600/50 mt-2"
-          >
-            {isLogin ? "Login" : "Register"}
-          </button>
+            title={
+              formik.isSubmitting ? (
+                <Spinner
+                  className="w-full flex items-center justify-center text-gray-200"
+                  width="6"
+                  height="6"
+                />
+              ) : isLogin ? (
+                "Login"
+              ) : (
+                "Register"
+              )
+            }
+          />
         </form>
 
         {/* --- Switch beetween login & register form --- */}
         <div className="mt-6 text-center text-sm text-gray-400">
           {isLogin ? "Don't have an account?" : "Have you already registered?"}
-          <button
+          <Button
             type="button"
-            onClick={() => {
+            action={() => {
               onToggleMode(!isLogin);
             }}
             className="text-red-500 font-bold mr-1 hover:text-red-400 transition-colors"
-          >
-            {isLogin ? "Register" : "Login"}
-          </button>
+            title={isLogin ? "Register" : "Login"}
+          />
         </div>
       </motion.div>
     </div>

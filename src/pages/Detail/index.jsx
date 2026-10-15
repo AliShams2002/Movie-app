@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import useAuthStore from "../../store/useAuthStore";
 import DetailHero from "../../components/detail/DetailHero";
 import PanelInfo from "../../components/detail/PanelInfo";
 import DetailInfo from "../../components/detail/DetailInfo";
@@ -9,8 +8,6 @@ import SimilarRow from "../../components/detail/SimilarRow";
 import Modal from "../../components/common/Modal";
 import { useMovieDetail } from "../../hooks/data/useMovieDetail";
 import EpisodesSection from "../../components/detail/EpisodesSection";
-import toast from "react-hot-toast";
-import { useUserDataStore } from "../../store/useUserDataStore";
 
 const itemVariants = {
   hidden: { y: 20, opacity: 0 },
@@ -19,14 +16,15 @@ const itemVariants = {
 
 const Detail = ({ type }) => {
   const { id } = useParams();
-  const { detail, credits, videos, similar, reviews, refetch, trailer } =
-    useMovieDetail({ type, id });
+  const { detail, credits, videos, similar, reviews, refetch } = useMovieDetail(
+    { type, id },
+  );
   const [isTrailerOpen, setisTrailerOpen] = useState(false);
 
   const mediaObject = detail.data
     ? {
         id: detail.data.id,
-        mediaType: type, // 'movie' | 'tv'
+        mediaType: type,
         title: detail.data.title || detail.data.name,
         poster_path: detail.data.poster_path,
         vote_average: detail.data.vote_average,
@@ -61,10 +59,11 @@ const Detail = ({ type }) => {
             setisTrailerOpen={() => setisTrailerOpen(true)}
             trailerKey={trailerKey}
             mediaObject={mediaObject}
+            refetch={refetch}
           />
 
           {/* Episodes Section */}
-          {type === "tv" && <EpisodesSection detail={detail.data} />}
+          {type === "tv" && <EpisodesSection detail={detail} />}
 
           {/* --- Reviews --- */}
           <ReviewList detail={reviews} />

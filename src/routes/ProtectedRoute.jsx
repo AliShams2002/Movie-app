@@ -1,13 +1,12 @@
-import React from "react";
 import useAuthStore from "../store/useAuthStore";
 import Spinner from "../components/common/Spinner";
 import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoute = () => {
   const { user, isLoading } = useAuthStore();
-  
+
   if (isLoading) return <Spinner />;
-  if (!user) <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/login" replace />;
 
   return <Outlet />;
 };

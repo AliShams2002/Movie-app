@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import ErrorState from "../common/ErrorState";
 import EmptyState from "../common/EmptyState";
 import MovieCard from "../movie/MovieCard";
+import MovieListSkeleton from "../common/MovieListSkeleton";
 
 const SectionMovie = ({
   initialData,
@@ -11,7 +12,7 @@ const SectionMovie = ({
 }) => {
   const { data, error, refetch, status } = initialData;
 
-  // if (status === "loading") return <MovieListSkeleton />;
+  if (status === "loading") return <MovieListSkeleton />;
   if (error) return <ErrorState errorMessage={error} refetch={refetch} />;
   if (!data.length) return <EmptyState />;
 
@@ -24,6 +25,7 @@ const SectionMovie = ({
         viewport={{ once: true, amount: 0.1 }}
         className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6"
       >
+        {/* Media Card */}
         {data.slice(0, 6).map((item) => (
           <MovieCard
             key={item.id}

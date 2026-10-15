@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { FilterSection } from "./FilterSection";
 import { FILTERS, MOVIE_GENRES, TV_GENRES } from "../../utils/constants";
+import React from "react";
 
 const FilterPanel = ({ filters, updateFilters }) => {
   return (
@@ -83,4 +84,4 @@ const FilterPanel = ({ filters, updateFilters }) => {
   );
 };
 
-export default FilterPanel;
+export default React.memo(FilterPanel);

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   getMovieCredits,
   getMovieDetail,
@@ -75,26 +75,6 @@ export function useMovieDetail({ type, id }) {
   const refetch = useCallback(() => {
     execute();
   }, [execute]);
-
-  // const trailer = useMemo(() => {
-  //   const videos = state.videos.data;
-
-  //   if (!videos?.length) return null;
-
-  //   const official = videos.find(
-  //     (v) => v.type === "Trailer" && v.site === "Youtube",
-  //   );
-
-  //   if (official) return official;
-
-  //   const trailerAny = videos.find(
-  //     (v) => v.type === "Trailer" && v.site === "Youtube",
-  //   );
-
-  //   if (trailerAny) return trailerAny;
-
-  //   return videos.find((v) => v.site === "YouTube") || null;
-  // }, [state.videos.data]);
 
   useEffect(() => {
     if (!id) return;

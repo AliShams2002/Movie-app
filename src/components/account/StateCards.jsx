@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Bookmark, Heart } from "lucide-react";
 
 const StateCards = ({ watchlist, favorites, itemVariants }) => {
+  // Format prop(object) to array
   const formatObjToArr = (watchlist) => {
     const items = Object.values(watchlist);
     return items;

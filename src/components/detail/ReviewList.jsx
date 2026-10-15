@@ -7,7 +7,7 @@ import ReviewSkeleton from "./skeleton/ReviewSkeleton";
 const ReviewList = ({ detail = null }) => {
   const { data, status, error } = detail;
 
-  if (status === "loading") return <ReviewSkeleton/>
+  if (status === "loading") return <ReviewSkeleton />;
   if (error) return <ErrorState />;
   if (!data) return <EmptyState />;
 
@@ -24,8 +24,10 @@ const ReviewList = ({ detail = null }) => {
         </h2>
 
         <div className="space-y-6 text-center">
-          {data?.results ? (
-            <ReviewCard reviews={data.results} />
+          {data?.results.length > 0 ? (
+            data.results
+              .slice(0, 3)
+              .map((review) => <ReviewCard key={review.id} review={review} />)
           ) : (
             <span className="text-gray-400 text-sm leading-relaxed">
               No comments have been posted!

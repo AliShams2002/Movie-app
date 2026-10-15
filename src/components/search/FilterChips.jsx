@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import { FILTERS, MOVIE_GENRES, TV_GENRES } from "../../utils/constants";
 import { getActiveFilters } from "../../utils/urlHelpers";
+import Button from "../common/Button";
 
 // Return filter label
 function getFilterLabel(key, value, filters) {
@@ -45,27 +46,28 @@ const FilterChips = ({ filters, onRemove, onClearAll }) => {
       <span className="text-sm text-white/50 mr-2">Active filters:</span>
       {/* Chips */}
       {activeKeys.map((key) => (
-        <button
+        <Button
           key={key}
-          onClick={() => onRemove(key)}
+          type="button"
+          action={() => onRemove(key)}
           className="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-dark-700 hover:bg-dark-600 border border-dark-600 text-sm transition-colors"
-          aria-label={`Remove ${key} filter`}
+          ariaLabel={`Remove ${key} filter`}
         >
           <span className="text-white/90">
             {getFilterLabel(key, filters[key], filters)}
           </span>
           <X className="w-3.5 h-3.5 text-white/50 group-hover:text-primary transition-colors" />
-        </button>
+        </Button>
       ))}
 
       {/* Clear all btn */}
       {activeKeys.length > 1 && (
-        <button
-          onClick={onClearAll}
+        <Button
+          type="button"
+          action={onClearAll}
           className="ml-2 text-sm text-primary hover:text-primary/80 font-medium transition-colors"
-        >
-          Clear all
-        </button>
+          title="Clear all"
+        />
       )}
     </div>
   );

@@ -8,10 +8,9 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { create } from "zustand";
-import { auth } from "../services/firebase";
+import { auth, db } from "../services/firebase";
 import toast from "react-hot-toast";
-import { updateDoc } from "firebase/firestore";
-import { uploadAvatar } from "../services/userService";
+import { doc, updateDoc } from "firebase/firestore";
 
 const useAuthStore = create((set, get) => ({
   user: null,
@@ -42,7 +41,7 @@ const useAuthStore = create((set, get) => ({
         email,
         password,
       );
-      // await createUserDoc({ ...user, displayName: name });
+      await updateProfile(user, { displayName: name });
       toast.success("Register success");
     } catch (error) {
       set({ error: error.code });
@@ -82,21 +81,18 @@ const useAuthStore = create((set, get) => ({
     if (!user) return;
 
     try {
-      // ۱. آپلود به Storage
-      const downloadURL = await uploadAvatar(user.uid, file);
-
-      // ۲. آپدیت Firebase Auth (اختیاری ولی خوبه)
-      await updateProfile(user, { photoURL: downloadURL });
-
       // ۳. آپدیت Firestore
       const docRef = doc(db, "users", user.uid);
-      await updateDoc(docRef, { avatar: downloadURL });
+
+      await updateDoc(docRef, { avatar: file });
 
       // ۴. آپدیت state
-      set({ user: { ...user, photoURL: downloadURL } });
+      set({ user: { ...user, avatar: file } });
 
-      return { success: true, url: downloadURL };
+      toast.success("Successful changed");
+      return { success: true, url: file };
     } catch (error) {
+      toast.error("Error in changing");
       console.error("Avatar upload failed:", error);
       return { success: false, error: error.message };
     }

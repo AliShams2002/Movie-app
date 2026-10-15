@@ -5,12 +5,14 @@ import {
   Film,
   Ghost,
   Heart,
+  Home,
   Laugh,
   Map,
   Music,
   Rocket,
   Search,
   SmilePlus,
+  Sparkles,
   Sword,
   Swords,
   Tv,
@@ -18,6 +20,43 @@ import {
   WandSparkles,
   Zap,
 } from "lucide-react";
+
+// Header label, path and icon
+export const NAV_ITEMS = [
+  { label: "HOME", path: "/", icon: <Home className="w-5 h-5" /> },
+  {
+    label: "MOVIES",
+    path: "/search?type=movie",
+    icon: <Film className="w-5 h-5" />,
+  },
+  { label: "TV", path: "/search?type=tv", icon: <Tv className="w-5 h-5" /> },
+  {
+    label: "ANIMATION",
+    path: "/search?genre=16&type=movie",
+    icon: <Sparkles className="w-5 h-5" />,
+  },
+];
+
+// Footer label and path
+export const FOOTER_ITEMS = {
+  QUICK_ACCESS: [
+    { label: "Feature Movies", path: "/search?list=popular&type=movie" },
+    { label: "New TV series Movies", path: "/search?list=top_rated&type=tv" },
+    {
+      label: "Best Anim",
+      path: "/search?genre=16&type=movie&sort=popularity.desc",
+    },
+    { label: "Advanced Search", path: "/search" },
+  ],
+  SUPPORT: [
+    { label: "Contact Us", path: "#" },
+    { label: "Frequently Asked Questions", path: "#" },
+  ],
+  RULES: [
+    { label: "Privacy", path: "#" },
+    { label: "Terms of Use", path: "#" },
+  ],
+};
 
 // Lable and value of static filters
 export const FILTERS = {

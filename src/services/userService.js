@@ -1,5 +1,4 @@
 import {
-  arrayUnion,
   deleteField,
   doc,
   getDoc,
@@ -7,10 +6,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { auth, db } from "./firebase";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
-const storage = getStorage();
+import { db } from "./firebase";
 
 export const createUserDoc = async (user) => {
   const docRef = doc(db, "users", user.uid);
@@ -54,61 +50,10 @@ export const getUserData = async (uid) => {
   };
 };
 
-// export const createUserDoc = async ({ email, password, username }) => {
-//   try {
-//     const cred = await createUserWithEmailAndPassword(auth, email, password);
-//     const user = cred.user;
-
-//     await setDoc(doc(db, "users", user.uid), {
-//       profile: {
-//         username,
-//         avatarURL: null,
-//         email: user.email,
-//         createdAt: serverTimestamp(),
-//       },
-//       lastLogin: serverTimestamp(),
-//       favorite: {},
-//       watchlist: {},
-//     });
-//     return { success: true, data: user, error: null };
-//   } catch (error) {
-//     return { success: false, data: null, error: error };
-//   }
-// };
-
-export const loginUser = async (email, password) => {
-  try {
-    const cred = await signInWithEmailAndPassword(auth, email, password);
-
-    await updateDoc(doc(db, "users", cred.user.uid), {
-      lastLogin: serverTimestamp(),
-    });
-    return { success: true, data: cred.user, error: null };
-  } catch (error) {
-    return { success: false, data: null, error: error };
-  }
-};
-
-export const loginWithGoogleProvider = async () => {
-  try {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    await handleUserDocument(result.user);
-    return { success: true, data: result.user, error: null };
-  } catch (error) {
-    return { success: false, data: null, error: error };
-  }
-};
-
-export const loginWithGithubProvider = async () => {
-  try {
-    const provider = new GithubAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    await handelUserDocument(result.user);
-    return { success: true, data: result.user, error: null };
-  } catch (error) {
-    return { success: false, data: null, error: error };
-  }
+// Get user progile
+export const getUserProfile = async (uid) => {
+  const snap = await getDoc(doc(db, "users", uid));
+  return snap.exists() ? snap.data() : null;
 };
 
 // Add to watchlist
@@ -153,20 +98,4 @@ export const removeFromFavorites = async (uid, mediaId) => {
   await updateDoc(doc(db, "users", uid), {
     [`favorites.${mediaId}`]: deleteField(),
   });
-};
-
-// آپلود و ذخیره آواتار
-export const uploadAvatar = async (uid, file) => {
-  // await updateDoc(doc(db, "users", uid), {
-  //   avatar: base64Image,
-  // });
-  const filePath = `avatars/${uid}/${Date.now()}-${file.name}`;
-  const storageRef = ref(storage, filePath);
-
-  // آپلود
-  await uploadBytes(storageRef, file);
-
-  // دریافت URL
-  const downloadURL = await getDownloadURL(storageRef);
-  return downloadURL;
 };

@@ -2,12 +2,17 @@ import { Play, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useWatchlist } from "../../hooks/user/useWatchlist";
 import { useFavorites } from "../../hooks/user/useFavorite";
+import React from "react";
 
 const MovieCard = ({ item, activeTab }) => {
+
+  // Add/Remove from watchlist
   const { toggle: toggleWatchlist } = useWatchlist(item?.id);
 
+  // Add/Remove from favorites
   const { toggle: toggleFavorites } = useFavorites(item?.id);
 
+  // Check active ab for remove item
   const handleItemRemove = () => {
     if (activeTab === "watchlist") {
       toggleWatchlist(item);
@@ -18,6 +23,7 @@ const MovieCard = ({ item, activeTab }) => {
 
   return (
     <div className="group relative cursor-pointer rounded-xl overflow-hidden aspect-[2/3] bg-gray-800 border border-gray-700/30 hover:border-red-500/50 transition-colors">
+      {/* Img */}
       <img
         src={`${item.posterPath ? `https://image.tmdb.org/t/p/original/${item.posterPath}` : "/images/Auth_Wallpaper.jpg"}`}
         alt={item.title}
@@ -28,9 +34,10 @@ const MovieCard = ({ item, activeTab }) => {
         }}
       />
 
-      {/* Overlay برای نمایش در هاور */}
+      {/* Overlay for display on hover */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
         <div className="absolute top-2 right-4">
+          {/* Remove btn */}
           <X
             onClick={handleItemRemove}
             className="hover:text-gray-400 duration-150"
@@ -53,7 +60,7 @@ const MovieCard = ({ item, activeTab }) => {
         </Link>
       </div>
 
-      {/* اطلاعات دائمی (زمانی که هاور نیست) */}
+      {/* Persistent information (when not hovering) */}
       <div className="absolute bottom-3 left-3 right-3 z-10 flex justify-between items-end group-hover:opacity-0 transition-opacity duration-300">
         <h3 className="font-bold text-xs truncate max-w-[70%] drop-shadow-md text-white">
           {item.title}
@@ -66,4 +73,4 @@ const MovieCard = ({ item, activeTab }) => {
   );
 };
 
-export default MovieCard;
+export default React.memo(MovieCard);

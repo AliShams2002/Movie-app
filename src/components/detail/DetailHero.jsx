@@ -19,8 +19,11 @@ const DetailHero = ({ detail }) => {
         }
         alt={data?.name}
         className="w-full h-full object-cover"
+        onError={(e) => {
+          e.currentTarget.src = "/images/placeholder.jpg";
+        }}
       />
-      {/* گرادینت‌های تاریک حرفه‌ای */}
+      {/* Dark gradients */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/70 to-transparent"></div>
       <div className="absolute inset-0 bg-black/40"></div>
     </div>

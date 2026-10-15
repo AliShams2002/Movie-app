@@ -1,6 +1,6 @@
-import React from "react";
 import { Toaster } from "react-hot-toast";
 
+// Creating a provider to use the toast library throughout the application.
 const Provider = ({ children }) => {
   return (
     <div>
