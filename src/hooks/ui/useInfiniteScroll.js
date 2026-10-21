@@ -22,9 +22,7 @@ export function useInfiniteScroll({ onLoadMore, hasMore, isLoading }) {
     if (el) observer.observe(el);
 
     // Cleanup
-    return () => {
-      if (el) observer.unobserve(el);
-    };
+    return () => observer.disconnect();
   }, [onLoadMore, hasMore, isLoading]);
 
   return { sentinelRef };

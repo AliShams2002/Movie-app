@@ -1,9 +1,8 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-// import { toast } from "react-toastify";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_MOVIE_API_URL || "https://api.themoviedb.org",
+  baseURL: import.meta.env.VITE_MOVIE_API_URL || "https://api.themoviedb.org/3",
   timeout: 30000,
   timeoutErrorMessage: "The response time took more than 30 seconds!",
   headers: {
@@ -25,7 +24,7 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    // مدیریت خطاهای شبکه یا سرور// مدیریت خطاهای مختلف
+    // Handling network or server errors // Handling various types of errors
     if (!error.response) {
       return Promise.reject(
         new Error("Connection to the server could not be established"),
@@ -35,14 +34,6 @@ axiosInstance.interceptors.response.use(
     const { status, data } = error.response;
 
     switch (status) {
-      case 401:
-        // Unauthorized - هدایت به صفحه login
-        localStorage.removeItem("token");
-        window.location.href =
-          "/login?redirect=" + encodeURIComponent(window.location.pathname);
-        toast.error("Please log in again");
-        break;
-
       case 404:
         // Not Found
         toast.error("The requested resource was not found");
@@ -61,17 +52,4 @@ axiosInstance.interceptors.response.use(
   },
 );
 
-// تابع retry برای خطاهای شبکه
-const retryAxios = async (fn, retries = 3, delay = 1000) => {
-  try {
-    return await fn();
-  } catch (error) {
-    if (retries > 0 && (!error.response || error.response.status >= 500)) {
-      await new Promise((resolve) => setTimeout(resolve, delay));
-      return retryAxios(fn, retries - 1, delay * 2);
-    }
-    throw error;
-  }
-};
-
-export { axiosInstance, retryAxios };
+export { axiosInstance };

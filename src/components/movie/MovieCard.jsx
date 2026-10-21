@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 import React from "react";
 import Button from "../common/Button";
+import { getTmdbImage } from "../../utils/tmdbImage";
 
 const MovieCard = ({ movie, type = "movie", itemVariants }) => {
   return (
@@ -14,11 +15,30 @@ const MovieCard = ({ movie, type = "movie", itemVariants }) => {
     >
       {/* Img */}
       <img
-        src={`${movie.poster_path ? `https://image.tmdb.org/t/p/original/${movie.poster_path}` : "/images/placeholder.jpg"}`}
-        alt={movie.title}
+        src={`${movie.poster_path ? getTmdbImage(movie.poster_path, "w342") : "/images/placeholder.jpg"}`}
+        srcSet={
+          movie.poster_path
+            ? `https://image.tmdb.org/t/p/w185${movie.poster_path} 185w,
+         https://image.tmdb.org/t/p/w342${movie.poster_path} 342w`
+            : undefined
+        }
+        sizes="(max-width: 640px) 45vw, 170px"
+        alt={movie.title || movie.name || "Movie poster"}
         className="w-full h-full object-cover transition-transform duration-500 group group-hover:scale-110"
         loading="lazy"
         onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.srcset = "";
+          e.currentTarget.src = "/images/placeholder.jpg";
+        }}
+      />
+        sizes="(max-width: 640px) 45vw, 170px"
+        alt={movie.title || movie.name || "Movie poster"}
+        className="w-full h-full object-cover transition-transform duration-500 group group-hover:scale-110"
+        loading="lazy"
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.srcset = "";
           e.currentTarget.src = "/images/placeholder.jpg";
         }}
       />

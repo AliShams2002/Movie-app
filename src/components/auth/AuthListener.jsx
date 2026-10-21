@@ -9,10 +9,10 @@ export default function AuthListener({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        await createUserDoc(user);
         // Get user profile from firestore
         const userProfile = await getUserProfile(user.uid);
         useAuthStore.getState().setUser({ ...userProfile, uid: user.uid });
-        await createUserDoc(user);
         await useUserDataStore.getState().loadUserData(user.uid);
       } else {
         // Reset userdata & userdata store

@@ -8,6 +8,7 @@ const ProtectedRoute = () => {
   if (isLoading) return <Spinner />;
   if (!user) return <Navigate to="/login" replace />;
 
+  // Outlet: account page
   return <Outlet />;
 };
 

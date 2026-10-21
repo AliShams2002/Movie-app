@@ -21,6 +21,7 @@ const Detail = ({ type }) => {
   );
   const [isTrailerOpen, setisTrailerOpen] = useState(false);
 
+  // Create media object for add to watchlist/favorites
   const mediaObject = detail.data
     ? {
         id: detail.data.id,
@@ -33,6 +34,7 @@ const Detail = ({ type }) => {
       }
     : null;
 
+  // Handle trailer key
   const trailerKey = useMemo(() => {
     return (
       videos.data?.results?.find((video) => video.type === "Trailer")?.key ||
@@ -78,7 +80,7 @@ const Detail = ({ type }) => {
         isOpen={isTrailerOpen}
         onClose={() => setisTrailerOpen(false)}
         videoKey={trailerKey}
-        title="Interstellar"
+        title={detail.data?.title || detail.data?.name}
       />
     </div>
   );

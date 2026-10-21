@@ -1,3 +1,4 @@
+import { getTmdbImage } from "../../utils/tmdbImage";
 import EmptyState from "../common/EmptyState";
 import ErrorState from "../common/ErrorState";
 import HeroSkeleton from "./skeleton/HeroSkeleton";
@@ -14,12 +15,24 @@ const DetailHero = ({ detail }) => {
       <img
         src={
           data?.backdrop_path
-            ? `https://image.tmdb.org/t/p/original/${data?.backdrop_path}`
+            ? getTmdbImage(data.backdrop_path, "w342")
             : "/images/placeholder.jpg"
         }
-        alt={data?.name}
+        srcSet={
+          data?.backdrop_path
+            ? [
+                `${getTmdbImage(data.backdrop_path, "w780")} 780w`,
+                `${getTmdbImage(data.backdrop_path, "w1280")} 1280w`,
+              ].join(", ")
+            : undefined
+        }
+        sizes="100vw"
+        alt={data?.title || data?.name || "Featured movie"}
+        loading="eager"
         className="w-full h-full object-cover"
+        decoding="async"
         onError={(e) => {
+          e.currentTarget.onerror = null;
           e.currentTarget.src = "/images/placeholder.jpg";
         }}
       />

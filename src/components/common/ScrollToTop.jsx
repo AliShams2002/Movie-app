@@ -4,6 +4,7 @@ const ScrollToTop = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    // Check and set setVisible value
     const toggleVisible = () => {
       setVisible(window.scrollY > 300);
     };
@@ -12,6 +13,7 @@ const ScrollToTop = () => {
     return () => window.removeEventListener("scroll", toggleVisible);
   }, []);
 
+  // Scroll to up method
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };

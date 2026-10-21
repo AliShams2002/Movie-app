@@ -7,6 +7,7 @@ import {
   getMovieVideos,
 } from "../../services/movieService";
 
+// Initial state shape for each data section
 const INITIAL = { data: null, status: "loading", error: null };
 
 export function useMovieDetail({ type, id }) {
@@ -18,6 +19,7 @@ export function useMovieDetail({ type, id }) {
     reviews: INITIAL,
   });
 
+  // Keep latest params in a ref so `execute` stays stable without re-creating
   const paramsRef = useRef({ type, id });
 
   useEffect(() => {
@@ -28,6 +30,7 @@ export function useMovieDetail({ type, id }) {
     const { type, id } = paramsRef.current;
     if (!id) return;
 
+    // Reset all sections to loading state
     setState({
       detail: { ...INITIAL },
       credits: { ...INITIAL },
@@ -36,6 +39,7 @@ export function useMovieDetail({ type, id }) {
       reviews: { ...INITIAL },
     });
 
+    // Fetch all movie-related data in parallel; don't fail fast
     const results = await Promise.allSettled([
       getMovieDetail({ type, id, signal }),
       getMovieCredits({ type, id, signal }),
@@ -44,7 +48,8 @@ export function useMovieDetail({ type, id }) {
       getMovieReviews({ type, id, signal }),
     ]);
 
-    if (signal?.abort) return;
+    // Ignore results if the request was aborted (component unmounted or params changed)
+    if (signal?.aborted) return;
 
     const keys = ["detail", "credits", "videos", "similar", "reviews"];
 
@@ -54,7 +59,7 @@ export function useMovieDetail({ type, id }) {
       if (result.status === "fulfilled") {
         next[key] = { data: result.value, status: "success", error: null };
       } else {
-        // AbortError رو نادیده بگیر
+        // Ignore abort errors - keep section in loading state
         if (
           result.reason?.name === "CanceledError" ||
           result.reason?.name === "AbortError"
@@ -72,10 +77,12 @@ export function useMovieDetail({ type, id }) {
     setState(next);
   }, []);
 
+  // Manual refetch without abort signal
   const refetch = useCallback(() => {
     execute();
   }, [execute]);
 
+  // Auto-fetch when type or id changes, with cleanup via AbortController
   useEffect(() => {
     if (!id) return;
 

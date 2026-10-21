@@ -10,6 +10,7 @@ export function useScrollPosition(threshold = 50) {
 
     handleScroll();
 
+    // Check scroll event
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [threshold]);

@@ -20,6 +20,6 @@ export default defineConfig({
         },
       },
     },
-    chunkSizeWarningLimit: 600, // اختیاری — warning threshold
+    chunkSizeWarningLimit: 600,
   },
 });

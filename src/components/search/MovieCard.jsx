@@ -1,8 +1,8 @@
 import { Calendar, Play, Star } from "lucide-react";
 import { handelMovieGenre, handelTvGenre } from "../../utils/genreHelper";
-import { Link } from "react-router-dom";
 import React from "react";
 import Button from "../common/Button";
+import { getTmdbImage } from "../../utils/tmdbImage";
 
 const MovieCard = ({ movie, type }) => {
   return (
@@ -17,13 +17,22 @@ const MovieCard = ({ movie, type }) => {
         <img
           src={
             movie.poster_path
-              ? `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+              ? getTmdbImage(movie.poster_path, "w342")
               : "/images/placeholder.jpg"
           }
-          alt={movie.title}
+          srcSet={
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/w185${movie.poster_path} 185w,
+         https://image.tmdb.org/t/p/w342${movie.poster_path} 342w`
+              : undefined
+          }
+          sizes="(max-width: 640px) 45vw, 170px"
+          alt={movie.title || movie.name || "Movie poster"}
           loading="lazy"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.srcset = "";
             e.currentTarget.src = "/images/placeholder.jpg";
           }}
         />

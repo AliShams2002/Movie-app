@@ -49,17 +49,17 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white font-sans relative overflow-x-hidden pb-24">
-      {/* --- Header (Hero Section) --- */}
+      {/* Header (Hero Section) */}
       <HeroSection data={nowPlaying.data.slice(0, 3)} />
 
-      {/* --- Genres Section --- */}
+      {/* Genres Section */}
       <GenreList
         genres={MOVIE_GENRES}
         containerVariants={containerVariants}
         itemVariants={itemVariants}
       />
 
-      {/* --- Popular Movies Section --- */}
+      {/* Popular Movies Section */}
       <MovieRow
         title="Popular movies"
         subtitle="Cinema Audience Choice"
@@ -71,7 +71,7 @@ const Home = () => {
         itemVariants={itemVariants}
       />
 
-      {/* --- Popular Series Section --- */}
+      {/* Popular Series Section */}
       <MovieRow
         title="Top TV Series"
         subtitle="The latest episodes of the week"
@@ -83,10 +83,10 @@ const Home = () => {
         itemVariants={itemVariants}
       />
 
-      {/* --- Call to Action for Advanced Search --- */}
+      {/* Call to Action for Advanced Search */}
       <SearchBanner />
 
-      {/* --- Animation Section --- */}
+      {/* Animation Section */}
       <MovieRow
         title="The Best Animations"
         subtitle="The latest animation and anime works"

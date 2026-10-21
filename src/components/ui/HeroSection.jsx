@@ -9,16 +9,21 @@ import { useMovieVideos } from "../../hooks/data/useMovieVideos";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import Modal from "../common/Modal";
+import { getTmdbImage } from "../../utils/tmdbImage";
 
 const HeroSection = ({ data }) => {
-  const [trailerKey, setTrailerKey] = useState(null);
+  const [trailerDetail, setTrailerDetail] = useState({
+    trailerName: "",
+    trailerKey: "",
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { fetchTrailer, isLoading } = useMovieVideos();
 
-  const handlePlayClick = async (id) => {
-    const key = await fetchTrailer(id, "movie");
-    if (key) {
-      setTrailerKey(key);
+  // Check and handle key & modal
+  const handlePlayClick = async (item) => {
+    const trailer = await fetchTrailer(item.id, "movie");
+    if (trailer) {
+      setTrailerDetail({ trailerName: item.title, trailerKey: trailer.key });
       setIsModalOpen(true);
     } else {
       toast.error("No trailer available for this movie");
@@ -35,11 +40,23 @@ const HeroSection = ({ data }) => {
                 {/* Background Image */}
                 <div className="absolute inset-0">
                   <img
-                    src={`${item.backdrop_path ? `https://image.tmdb.org/t/p/original/${item.backdrop_path}` : "/images/Auth_Wallpaper.jpg"} `}
-                    alt={item.title}
+                    src={`${item.backdrop_path ? getTmdbImage(item.backdrop_path, "w342") : "/images/Auth_Wallpaper.jpg"} `}
+                    srcSet={
+                      item.backdrop_path
+                        ? [
+                            `${getTmdbImage(item.backdrop_path, "w780")} 780w`,
+                            `${getTmdbImage(item.backdrop_path, "w1280")} 1280w`,
+                          ].join(", ")
+                        : undefined
+                    }
+                    sizes="100vw"
+                    alt={item.title || item.name || "Featured movie"}
                     className="absolute inset-0 w-full h-full object-cover"
-                    loading="lazy"
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                    decoding="async"
                     onError={(e) => {
+                      e.currentTarget.onerror = null;
                       e.currentTarget.src = "/images/Auth_Wallpaper.jpg";
                     }}
                   />
@@ -86,7 +103,7 @@ const HeroSection = ({ data }) => {
                           {/* Play btn */}
                           <Button
                             type="button"
-                            action={() => handlePlayClick(item.id)}
+                            action={() => handlePlayClick(item)}
                             className="flex items-center gap-2 bg-red-600 hover:bg-red-700 transition-all px-8 py-3 rounded-full font-bold text-md shadow-lg shadow-red-600/30"
                             icon={<Play className="w-4 h-4" />}
                             title="play"
@@ -112,8 +129,8 @@ const HeroSection = ({ data }) => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        videoKey={trailerKey}
-        title="Interstellar"
+        videoKey={trailerDetail.trailerKey}
+        title={trailerDetail.trailerName}
       />
     </div>
   );

@@ -46,6 +46,22 @@ const Search = () => {
     }
   }, [debouncedQuery]);
 
+  useEffect(() => {
+    // Auto-open the filter panel when the viewport drops below the lg breakpoint
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setIsFilterOpen(true);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup: remove the listener on unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   // Updated filters
   const updateFilters = useCallback(
     (patch) => {

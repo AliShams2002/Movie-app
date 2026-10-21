@@ -36,21 +36,21 @@ const Account = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white font-sans pb-24">
-      {/* --- 1. Profile Header (Cover & Info) --- */}
+      {/* Profile Header (Cover & Info) */}
       <ProfileHeader user={user} useAuthStore={useAuthStore} />
 
-      {/* --- 2. Stats Cards (Watchlist & favorites) --- */}
+      {/* Stats Cards (Watchlist & favorites) */}
       <StateCards
         watchlist={watchlist}
         favorites={favorites}
         itemVariants={itemVariants}
       />
 
-      {/* --- 3. Tabs (Watchlist / favorites) --- */}
+      {/* Tabs (Watchlist / favorites) */}
       <div className="container mx-auto max-w-6xl px-6 mt-12">
         <AccountTabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        {/* --- 4. Content Grid --- */}
+        {/* Content Grid */}
         <MediaGrid
           activeTab={activeTab}
           containerVariants={containerVariants}

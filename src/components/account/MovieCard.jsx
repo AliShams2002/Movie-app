@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { useWatchlist } from "../../hooks/user/useWatchlist";
 import { useFavorites } from "../../hooks/user/useFavorite";
 import React from "react";
+import { getTmdbImage } from "../../utils/tmdbImage";
 
 const MovieCard = ({ item, activeTab }) => {
-
   // Add/Remove from watchlist
   const { toggle: toggleWatchlist } = useWatchlist(item?.id);
 
@@ -25,12 +25,21 @@ const MovieCard = ({ item, activeTab }) => {
     <div className="group relative cursor-pointer rounded-xl overflow-hidden aspect-[2/3] bg-gray-800 border border-gray-700/30 hover:border-red-500/50 transition-colors">
       {/* Img */}
       <img
-        src={`${item.posterPath ? `https://image.tmdb.org/t/p/original/${item.posterPath}` : "/images/Auth_Wallpaper.jpg"}`}
-        alt={item.title}
+        src={`${item.posterPath ? getTmdbImage(item.posterPath, "w342") : "/images/placeholder.jpg"}`}
+        srcSet={
+          item.posterPath
+            ? `https://image.tmdb.org/t/p/w185${item.posterPath} 185w,
+         https://image.tmdb.org/t/p/w342${item.posterPath} 342w`
+            : undefined
+        }
+        sizes="(max-width: 640px) 45vw, 170px"
+        alt={item.title || item.name || "Movie poster"}
         className="w-full h-full object-cover transition-transform duration-500 group group-hover:scale-110"
         loading="lazy"
         onError={(e) => {
-          e.currentTarget.src = "/images/Auth_Wallpaper.jpg";
+          e.currentTarget.onerror = null;
+          e.currentTarget.srcset = "";
+          e.currentTarget.src = "/images/placeholder.jpg";
         }}
       />
 

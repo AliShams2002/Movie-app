@@ -22,12 +22,13 @@ const Navbar = () => {
     <nav className={`fixed top-0 z-40 w-full ${navClass}`}>
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <a
-          href="/"
+        <Button
+          type="link"
+          action="/"
           className="text-2xl font-bold text-red-500 tracking-wider drop-shadow-md"
         >
           CINEMA
-        </a>
+        </Button>
         {/* Nav items */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium">
           <ul className="flex items-center gap-8 text-sm font-medium">

@@ -7,9 +7,12 @@ export function useFavorites(mediaId) {
   const favorites = useUserDataStore((s) => s.favorites);
   const toggleFavorites = useUserDataStore((s) => s.toggleFavorites);
 
+  // Check if the current media item exists in the user's favorites
   const isInFavorites = !!favorites[mediaId];
 
+  // Toggles the media item in favorites (add/remove)
   const toggle = async (mediaObject) => {
+    // Require authentication before modifying favorites
     if (!user) return { needsLogin: true };
     const result = await toggleFavorites(user.uid, mediaObject);
 

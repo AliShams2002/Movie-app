@@ -1,6 +1,7 @@
 import {
   Castle,
   Cat,
+  Clapperboard,
   Drama,
   Film,
   Ghost,
@@ -57,6 +58,25 @@ export const FOOTER_ITEMS = {
     { label: "Terms of Use", path: "#" },
   ],
 };
+
+// Notfound optinal btn
+export const NOT_FOUND_ITEMS = [
+  {
+    title: "Popular movies",
+    icon: <Clapperboard className="w-3 h-3" />,
+    path: "/search?list=popular&type=movie",
+  },
+  {
+    title: "Top TV Series",
+    icon: <Tv className="w-3 h-3" />,
+    path: "/search?list=top_rated&type=tv",
+  },
+  {
+    title: "The Best Animations",
+    icon: <Sparkles className="w-3 h-3 text-cyan-400" />,
+    path: "/search?genre=16&type=movie&sort=popularity.desc",
+  },
+];
 
 // Lable and value of static filters
 export const FILTERS = {

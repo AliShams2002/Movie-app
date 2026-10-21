@@ -94,9 +94,9 @@ const MobileMenu = ({ user }) => {
                     >
                       <Link
                         to={item.path}
-                        onClick={() => setActiveTab(item.title)}
+                        onClick={() => setActiveTab(item.label)}
                         className={`flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group ${
-                          activeTab === item.title
+                          activeTab === item.label
                             ? "bg-red-600/10 border border-red-500/30 text-red-400"
                             : "text-gray-300 hover:bg-white/5 hover:text-white border border-transparent"
                         }`}

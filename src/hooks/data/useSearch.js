@@ -17,8 +17,8 @@ export function useSearch({ filters }) {
     filterRef.current = filters;
   }, [filters]);
 
-  //   Getting the hasMore value
-  const hasMore = page <= totalPages;
+  //   Handle the hasMore value
+  const hasMore = page < totalPages;
 
   //   Initial fetch with abort controll
   const execute = useCallback(async () => {

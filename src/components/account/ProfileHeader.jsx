@@ -25,7 +25,7 @@ const ProfileHeader = ({ user, useAuthStore }) => {
       <div className="relative h-64 md:h-80 w-full overflow-hidden">
         {/* image */}
         <img
-          src="/images/Auth_Wallpaper.jpg"
+          src="/images/Auth_Wallpaper.webp"
           alt="Cover"
           className="w-full h-full object-cover"
         />
@@ -45,7 +45,7 @@ const ProfileHeader = ({ user, useAuthStore }) => {
             <div className="w-32 h-32 md:w-40 md:h-40 rounded-full p-1 bg-gradient-to-br from-red-500 via-red-600 to-orange-500 shadow-2xl shadow-red-600/30">
               <img
                 src={user.avatar || "/images/UserAvatar.png"}
-                alt={user.displayName}
+                alt={user.username}
                 className="w-full h-full object-cover rounded-full border-4 border-[#0a0a0a]"
                 onError={(e) => {
                   e.currentTarget.src = "/images/UserAvatar.png";

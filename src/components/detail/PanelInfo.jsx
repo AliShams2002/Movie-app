@@ -5,6 +5,7 @@ import { MdDateRange } from "react-icons/md";
 import ErrorState from "../common/ErrorState";
 import EmptyState from "../common/EmptyState";
 import InfoSkeleton from "./skeleton/InfoSkeleton";
+import { getTmdbImage } from "../../utils/tmdbImage";
 
 const PanelInfo = ({ type, detail }) => {
   const { data, status, error } = detail;
@@ -26,12 +27,22 @@ const PanelInfo = ({ type, detail }) => {
           <img
             src={
               data?.poster_path
-                ? `https://image.tmdb.org/t/p/original/${data?.poster_path}`
+                ? getTmdbImage(data.poster_path, "w342")
                 : "/images/placeholder.jpg"
             }
-            alt={data?.title}
+            srcSet={
+              data?.poster_path
+                ? `https://image.tmdb.org/t/p/w185${data.poster_path} 185w,
+         https://image.tmdb.org/t/p/w342${data.poster_path} 342w`
+                : undefined
+            }
+            sizes="(max-width: 640px) 45vw, 170px"
+            alt={data?.title || data?.name || "Movie poster"}
             className="w-full h-full object-cover"
+            loading="lazy"
             onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.srcset = "";
               e.currentTarget.src = "/images/placeholder.jpg";
             }}
           />

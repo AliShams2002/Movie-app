@@ -21,6 +21,7 @@ const useAuthStore = create((set, get) => ({
   setLoading: (isLoading) => set({ isLoading }),
   setError: (error) => set({ error }),
 
+  // Email/password login
   login: async (email, password) => {
     set({ error: null });
     try {
@@ -33,6 +34,7 @@ const useAuthStore = create((set, get) => ({
     }
   },
 
+  // Email/password registration with display name
   register: async (name, email, password) => {
     set({ error: null });
     try {
@@ -50,6 +52,7 @@ const useAuthStore = create((set, get) => ({
     }
   },
 
+  // Google OAuth login
   loginWithGoogle: async () => {
     set({ error: null });
     try {
@@ -63,6 +66,7 @@ const useAuthStore = create((set, get) => ({
     }
   },
 
+  // GitHub OAuth login
   loginWithGithub: async () => {
     set({ error: null });
     try {
@@ -76,17 +80,18 @@ const useAuthStore = create((set, get) => ({
     }
   },
 
+  // Updates the user's avatar in Firestore and local state
   updateUserAvatar: async (file) => {
     const user = get().user;
     if (!user) return;
 
     try {
-      // ۳. آپدیت Firestore
+      // Update Firestore user document
       const docRef = doc(db, "users", user.uid);
 
       await updateDoc(docRef, { avatar: file });
 
-      // ۴. آپدیت state
+      // Update local state
       set({ user: { ...user, avatar: file } });
 
       toast.success("Successful changed");
@@ -98,6 +103,7 @@ const useAuthStore = create((set, get) => ({
     }
   },
 
+  // Signs the user out
   logout: async () => {
     try {
       await signOut(auth);
