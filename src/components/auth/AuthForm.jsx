@@ -69,9 +69,9 @@ const AuthForm = ({ isLogin, onToggleMode }) => {
       {/* --- Blurred background from movie posters --- */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/images/Auth_Wallpaper.jpg"
+          src="/images/Auth_Wallpaper.webp"
           alt="Background"
-          className="w-full h-full object-cover blur-sm opacity-20"
+          className="w-full h-full object-cover opacity-20"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/10 to-[#0a0a0a]/30"></div>
       </div>
