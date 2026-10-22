@@ -27,10 +27,9 @@ const Detail = ({ type }) => {
         id: detail.data.id,
         mediaType: type,
         title: detail.data.title || detail.data.name,
-        poster_path: detail.data.poster_path,
-        vote_average: detail.data.vote_average,
-        release_date: detail.data.release_date,
-        first_air_date: detail.data.first_air_date,
+        posterPath: detail.data.poster_path,
+        voteAverage: detail.data.vote_average,
+        releaseDate: detail.data.release_date || detail.data.first_air_date,
       }
     : null;
 

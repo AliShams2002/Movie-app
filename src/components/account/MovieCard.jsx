@@ -4,6 +4,7 @@ import { useWatchlist } from "../../hooks/user/useWatchlist";
 import { useFavorites } from "../../hooks/user/useFavorite";
 import React from "react";
 import { getTmdbImage } from "../../utils/tmdbImage";
+import Button from "../common/Button";
 
 const MovieCard = ({ item, activeTab }) => {
   // Add/Remove from watchlist
@@ -60,13 +61,14 @@ const MovieCard = ({ item, activeTab }) => {
         </div>
         <h3 className="font-bold text-sm truncate text-white">{item.title}</h3>
         <p className="text-[10px] text-gray-400">{item.releaseDate}</p>
-        <Link
-          to={`/${item.mediaType}/${item.id}`}
+        <Button
+          type="link"
+          action={`/${item.mediaType}/${item.id}`}
           className="mt-3 w-full bg-red-600/90 hover:bg-red-600 py-2 rounded-lg text-[11px] font-bold transition-colors flex items-center justify-center gap-1"
         >
           <Play className="w-3 h-3 fill-current" />
           PLAY
-        </Link>
+        </Button>
       </div>
 
       {/* Persistent information (when not hovering) */}

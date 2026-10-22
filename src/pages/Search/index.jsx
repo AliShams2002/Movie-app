@@ -29,8 +29,16 @@ const Search = () => {
   const debouncedQuery = useDebounce(queryInput, 500);
 
   // get all request off useSearch
-  const { results, status, error, hasMore, loadMore, isLoadingMore, refetch } =
-    useSearch({ filters });
+  const {
+    results,
+    status,
+    error,
+    hasMore,
+    loadMore,
+    isLoadingMore,
+    refetch,
+    loadMoreError,
+  } = useSearch({ filters });
 
   // custom hook for infinity scroll
   const { sentinelRef } = useInfiniteScroll({
@@ -163,6 +171,26 @@ const Search = () => {
             <div className="w-full flex items-center flex-col gap-1">
               <Spinner className="bg-transparent" />
               <span>Lodaing more item...</span>
+            </div>
+          )}
+
+          {loadMoreError && (
+            <div
+              role="alert"
+              className="flex flex-col items-center gap-3 py-6 text-center"
+            >
+              <p className="text-red-400">Could not load more results.</p>
+
+              <button
+                type="button"
+                onClick={loadMore}
+                disabled={isLoadingMore}
+                className="rounded-lg bg-red-600 px-4 py-2
+                 text-white transition hover:bg-red-700
+                 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {isLoadingMore ? "Retrying..." : "Try again"}
+              </button>
             </div>
           )}
 

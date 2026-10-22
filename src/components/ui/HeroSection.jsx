@@ -53,7 +53,7 @@ const HeroSection = ({ data }) => {
                     alt={item.title || item.name || "Featured movie"}
                     className="absolute inset-0 w-full h-full object-cover"
                     loading={index === 0 ? "eager" : "lazy"}
-                    fetchPriority={index === 0 ? "high" : "auto"}
+                    fetchpriority={index === 0 ? "high" : "auto"}
                     decoding="async"
                     onError={(e) => {
                       e.currentTarget.onerror = null;

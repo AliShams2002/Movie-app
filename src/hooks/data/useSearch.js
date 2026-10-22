@@ -8,6 +8,7 @@ export function useSearch({ filters }) {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [loadMoreError, setLoadMoreError] = useState(null);
 
   const filterRef = useRef(filters);
   const abortControllerRef = useRef(null);
@@ -78,6 +79,7 @@ export function useSearch({ filters }) {
 
     isLoadingMoreRef.current = true;
     setIsLoadingMore(true);
+    setLoadMoreError(null);
     const nextPage = page + 1;
 
     try {
@@ -92,7 +94,7 @@ export function useSearch({ filters }) {
       setPage(nextPage);
       setTotalPages(response.total_pages);
     } catch (err) {
-      console.error("Load more failed", err);
+      setLoadMoreError(err.message || "Load more failed");
     } finally {
       isLoadingMoreRef.current = false;
       setIsLoadingMore(false);
@@ -107,6 +109,7 @@ export function useSearch({ filters }) {
     loadMore,
     isLoadingMore,
     refetch,
+    loadMoreError,
   };
 }
 

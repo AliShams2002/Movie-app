@@ -13,6 +13,7 @@ const MediaGrid = ({
   isLoading,
   error,
 }) => {
+  console.log(currentList)
   if (isLoading)
     return <Spinner className="w-full mt-8 flex items-center justify-center" />;
   if (error) return <ErrorState errorMessage="Error loading data!" />;

@@ -63,9 +63,9 @@ export const addToWatchList = async (uid, media) => {
       id: media.id,
       mediaType: media.mediaType,
       title: media.title || media.name,
-      posterPath: media.poster_path,
-      voteAverage: media.vote_average,
-      releaseDate: media.release_date || media.first_air_date,
+      posterPath: media.posterPath,
+      voteAverage: media.voteAverage,
+      releaseDate: media.releaseDate,
       addedAt: serverTimestamp(),
     },
   });
